@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { ReactComponent as Logo } from '../../public/logo-eng.svg';
+import Logo from '../../public/logo-eng.svg';
 import {
     getBreakpointAndDown,
     getBreakpointAndUp,

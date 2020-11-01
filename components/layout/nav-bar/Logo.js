@@ -3,14 +3,13 @@ import styled from 'styled-components';
 import CupcakeIcon from '../../../assets/logo-cupcake.svg';
 import HebrewLogo from '../../../assets/logo-heb.svg';
 import EnglishLogo from '../../../assets/logo-eng.svg';
-// import { useSelector } from 'react-redux';
-// import { selectI18nLocale } from '../../redux/i18n/i18nSelectors';
 import {
     getBreakpointAndDown,
     getBreakpointAndUp,
     getPrimaryColor,
     getSecondaryColor,
 } from '../../../utils/ThemeSelectors';
+import { useRouter } from 'next/router';
 
 const Cupcake = styled(CupcakeIcon)`
     height: 70%;
@@ -53,12 +52,12 @@ const LogoWrapper = styled.div`
 `;
 
 export default function Logo(props) {
-    const i18nLocale = useSelector(selectI18nLocale);
+    const { locale } = useRouter();
 
     return (
         <LogoWrapper {...props}>
             <Cupcake />
-            <LogoTitle as={i18nLocale === 'he' ? HebrewLogo : EnglishLogo} />
+            <LogoTitle as={locale === 'he' ? HebrewLogo : EnglishLogo} />
         </LogoWrapper>
     );
 }

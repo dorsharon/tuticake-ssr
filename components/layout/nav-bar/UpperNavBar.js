@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import Link from 'next/link'
 import { Grid, Hidden, SvgIcon, Tab, Tabs, Typography, useScrollTrigger } from '@material-ui/core';
-import UpperNavBarAdditionalControls from './UpperNavBarAdditionalControls';
+import UpperNavBarControls from './UpperNavBarControls';
 import Logo from './Logo';
-// import { Translate } from 'react-redux-i18n';
 import {
     getBreakpointAndDown,
     getBreakpointAndUp,
@@ -12,8 +10,11 @@ import {
     getSecondaryColor,
 } from '../../../utils/ThemeSelectors';
 import navigationItems from './NavBarNavigationItems';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { useI18n } from 'next-localization';
 
-const a11yProps = index => ({
+const a11yProps = (index) => ({
     id: `nav-tab-${index}`,
     'aria-controls': `nav-tabpanel-${index}`,
 });
@@ -115,56 +116,60 @@ const NavBarAdditionalControlsWrapper = styled.div`
 `;
 
 export default function UpperNavBar() {
+    const { t } = useI18n();
+
     const isScrolled = useScrollTrigger({ threshold: 0, disableHysteresis: true });
 
-    const { pathname } = useLocation();
-
-    const history = useHistory();
+    const router = useRouter();
+    const { pathname } = router;
 
     const handleTabChange = (event, newValue) => {
-        history.push(newValue);
+        router.push(newValue);
     };
 
     return (
         <NavBar isShrinked={isScrolled} isBordered={isScrolled}>
             <Grid container component={NavBarControlsWrapper}>
                 <Grid item xs component={LogoWrapper}>
-                    <Logo onClick={() => history.push('/')} alt={'logo'} />
+                    <Logo onClick={() => router.push('/')} alt={'logo'} />
                 </Grid>
 
                 <Hidden mdDown>
                     <Grid item xs={6} component={TabsWrapper}>
                         <Tabs
-                            value={navigationItems.find(i => i.url === pathname) ? pathname : false}
+                            value={
+                                navigationItems.find((i) => i.url === pathname) ? pathname : false
+                            }
                             onChange={handleTabChange}
                             indicatorColor={'primary'}
                             textColor={'primary'}
                             centered
                         >
                             {navigationItems.map(({ name, i18nKey, icon: Icon, url }, index) => (
-                                <LinkTab
-                                    key={url}
-                                    label={
-                                        <LinkTabLabel>
-                                            <Translate value={`pageNames.${i18nKey}`} />
-                                        </LinkTabLabel>
-                                    }
-                                    icon={
-                                        <LinkTabIcon>
-                                            <Icon />
-                                        </LinkTabIcon>
-                                    }
-                                    to={url}
-                                    value={url}
-                                    {...a11yProps(index)}
-                                />
+                                <Link key={url} href={url}>
+                                    <Tab
+                                        label={
+                                            <LinkTabLabel>
+                                                {t(`pageNames.${i18nKey}`)}
+                                            </LinkTabLabel>
+                                        }
+                                        icon={
+                                            <LinkTabIcon>
+                                                <Icon />
+                                            </LinkTabIcon>
+                                        }
+                                        to={url}
+                                        value={url}
+                                        {...a11yProps(index)}
+                                    />
+                                </Link>
                             ))}
                         </Tabs>
                     </Grid>
                 </Hidden>
 
                 <Grid item xs component={NavBarAdditionalControlsWrapper}>
-                    <UpperNavBarAdditionalControls />
+                    <UpperNavBarControls />
                 </Grid>
             </Grid>
         </NavBar>

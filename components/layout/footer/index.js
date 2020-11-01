@@ -8,7 +8,7 @@ import {
     getFontFamily,
     getGradient,
 } from '../../../utils/ThemeSelectors';
-// import { Translate } from 'react-redux-i18n';
+import { useI18n } from 'next-localization';
 
 const FooterWrapper = styled.footer`
     display: flex;
@@ -48,10 +48,12 @@ const socialNetworkIcons = [
 ];
 
 export default function Footer() {
+    const { t } = useI18n();
+
     return (
         <FooterWrapper>
             <SocialMediaSection>
-                <Translate value={'footer.followUs'} />
+                {t('footer.followUs')}
 
                 <div>
                     {socialNetworkIcons.map(({ icon, url }) => (

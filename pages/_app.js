@@ -16,6 +16,9 @@ import { QueryCache, ReactQueryCacheProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query-devtools';
 import { useRouter } from 'next/router';
 import { lightThemeLtr, lightThemeRtl } from '../utils/theme';
+import { I18nProvider } from 'next-localization';
+import HE from '../locales/he.json';
+import EN from '../locales/en.json';
 
 const MainLayoutWrapper = styled.div`
     display: grid;
@@ -38,10 +41,11 @@ const queryCache = new QueryCache({
     defaultConfig: { queries: { staleTime: 1000 * 60 * 60, queryFn: defaultQueryFn } },
 });
 
-export default function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
     const { locale } = useRouter();
 
     const theme = locale === 'he' ? lightThemeRtl : lightThemeLtr;
+    const langDictionary = locale === 'he' ? HE : EN;
 
     const jss = create({
         plugins: [...jssPreset().plugins, locale === 'he' ? rtl() : null],
@@ -54,6 +58,10 @@ export default function MyApp({ Component, pageProps }) {
             jssStyles.parentElement.removeChild(jssStyles);
         }
     }, []);
+
+    useEffect(() => {
+        document.body.dir = locale === 'he' ? 'rtl' : 'ltr';
+    }, [locale]);
 
     return (
         <>
@@ -70,19 +78,19 @@ export default function MyApp({ Component, pageProps }) {
                                 <ReactQueryCacheProvider queryCache={queryCache}>
                                     <GlobalStyles />
 
-                                    <MainLayoutWrapper>
-                                        {/*<UpperNavBar />*/}
+                                    <I18nProvider locale={locale} lngDict={langDictionary}>
+                                        <MainLayoutWrapper>
+                                            <UpperNavBar />
 
-                                        <MainContent>
-                                            <div className={'asdfdasfsda'}>
+                                            <MainContent>
                                                 <Component {...pageProps} />
-                                            </div>
-                                        </MainContent>
+                                            </MainContent>
 
-                                        <Footer />
+                                            <Footer />
 
-                                        <BottomNavBar />
-                                    </MainLayoutWrapper>
+                                            <BottomNavBar />
+                                        </MainLayoutWrapper>
+                                    </I18nProvider>
 
                                     <ReactQueryDevtools
                                         initialIsOpen={false}
@@ -102,3 +110,5 @@ MyApp.propTypes = {
     Component: PropTypes.elementType.isRequired,
     pageProps: PropTypes.object.isRequired,
 };
+
+export default MyApp;

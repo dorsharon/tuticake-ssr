@@ -1,0 +1,130 @@
+{
+    "pageNames": {
+        "cakes": "עוגות",
+        "cupDesserts": "קינוחי כוסות",
+        "boxSets": "מארזים"
+    },
+    "contactActions": {
+        "sendWhatsappMessage": "שלח הודעה ב-Whatsapp",
+        "dial": "חייג:"
+    },
+    "actions": {
+        "areYouBusinessCustomer": "לקוח עסקי?",
+        "submit": "שלח",
+        "cancel": "ביטול"
+    },
+    "footer": {
+        "followUs": "עקבו אחרינו ברשתות החברתיות:",
+        "about": "אודות",
+        "siteMap": "מפת אתר",
+        "poweredBy": "מוגש ע\"י: אבס-דוש טכנולוגיות בע\"מ©"
+    },
+    "common": {
+        "thanks": "תודה",
+        "cancel": "ביטול",
+        "ok": "אישור",
+        "next": "המשך",
+        "back": "חזור"
+    },
+    "form": {
+        "required": "יש למלא שדה זה"
+    },
+    "areas": {
+        "global": "כל הארץ",
+        "merkaz": "המרכז",
+        "zafon": "צפון",
+        "darom": "דרום"
+    },
+    "products": {
+        "purchase": "לרכישה",
+        "dairy": "חלבי",
+        "parve": "פרווה",
+        "glutenFree": "ללא גלוטן",
+        "shekels": "ש\"ח"
+    },
+    "deliveryCities": {
+        "telAviv": "תל אביב",
+        "ramatGan": "רמת גן",
+        "givatayim": "גבעתיים",
+        "rishonLezion": "ראשון לציון",
+        "holon": "חולון",
+        "petahTikva": "פתח תקווה",
+        "kiryatOno": "קריית אונו",
+        "raanana": "רעננה",
+        "orYehuda": "אור יהודה",
+        "yahud": "יהוד"
+    },
+    "order": {
+        "purchase": "בצע הזמנה",
+        "productDetails": "פרטי המוצר",
+        "customerDetails": "פרטי הלקוח/ה",
+        "finalPrice": "מחיר סופי",
+        "deliveryMethod": "שיטת שילוח",
+        "pickup": "איסוף עצמי",
+        "delivery": "משלוח",
+        "deliveryExtraPayment": "(+30 ש\"ח)",
+        "pickupDateTime": "תאריך ושעה לאיסוף",
+        "deliveryDateTime": "תאריך ושעה למשלוח",
+        "deliveryCity": "עיר",
+        "deliveryAddress": "כתובת מלאה",
+        "fullName": "שם מלא",
+        "phoneNumber": "מס' טלפון",
+        "orderNotes": "הערות להזמנה",
+        "orderProcessing": {
+            "justAMoment": "רק רגע...",
+            "processing": "אנו מעבדים את הזמנתך."
+        },
+        "orderError": {
+            "sorry": "אנו מתנצלים, חלה שגיאה.",
+            "unableToReceive": "איננו מסוגלים לעבד את הזמנתך ברגע זה.",
+            "contact": "אנא צור/צרי עימנו קשר טלפוני או בווטסאפ: 054-6629179 לטיפול בהזמנתך."
+        },
+        "orderSuccess": {
+            "submitted": "הזמנתך התקבלה בהצלחה!",
+            "payment": "אנו ניצור עימך קשר בקרוב מאוד לאימות פרטי ההזמנה והסדרת התשלום.",
+            "thankYou": "תודה שבחרת בתותיקייק!",
+            "backToMainPage": "חזרה לדף הראשי"
+        }
+    },
+    "error": {
+        "generalErrorMessage": "נראה שיש בעיה לטעון את הדף הזה. אנא נסו שוב מאוחר יותר."
+    },
+    "comingSoon": {
+        "construction": "דף זה עדיין בבנייה.",
+        "socialMedia": "עקבו אחרינו ברשתות החברתיות כדי לדעת כאשר הוא יעלה.",
+        "whenItComes": "וכשהוא יעלה... זה יהיה כל כך טוב!"
+    },
+    "cakes": {
+        "questions": {
+            "topping": {
+                "question": "האם תרצו משהו מיוחד מעל העוגה?",
+                "example": "לדוג': ציפוי שוקולד, קצפת, עוגיות אוראו..."
+            },
+            "flavors": {
+                "question": "האם ישנם טעמים מיוחדים שתרצו?",
+                "example": "לדוג': שכבת וניל ומתחתיה שכבת עוגיות, פירורי עוגיות לוטוס..."
+            },
+            "writing": {
+                "question": "האם תרצו להוסיף כיתוב? אם כן, אנא ציינו היכן.",
+                "example": "לדוג': המילים 'מזל טוב אהובי' על מגש העוגה, המספר '18' מעל העוגה..."
+            },
+            "productNotes": {
+                "question": "האם ישנן הערות מיוחדות נוספות שתרצו לציין?",
+                "example": " "
+            }
+        }
+    },
+    "cupDesserts": {
+        "introduction": {
+            "1": "יום ההולדת של החבר/ה מתקרב ואינך יודע/ת מה להביא?",
+            "2": "רוצה להפתיע קרוב משפחה עם קינוח מפנק?",
+            "3": "הנה הפתרון בשבילך!",
+            "4": "קינוחי כוסות במבחר טעמים: לוטוס, פררו רושר, קינדר בואנו, קינדר אצבעות, הרשיז ואוראו",
+            "5": "הרכיבו את מארז הכוסות המושלם!"
+        },
+        "startOrder": "התחל הזמנה",
+        "pickQuantity": "כמה קינוחי כוסות תרצה/י במארז?",
+        "pickflavors": "אילו טעמים וכמה מכל אחד תרצו?",
+        "customFlavorNotice": "דרך אגב, שמנו לב שהינך רוצה כוסות בטעם לבחירתכם, ולכן נדאג לתאם זאת כשניצור עימך קשר."
+    }
+}

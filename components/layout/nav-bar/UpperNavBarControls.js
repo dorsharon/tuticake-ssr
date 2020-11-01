@@ -1,21 +1,17 @@
-import React, { Fragment, useState } from 'react';
-// import Tippy from '@tippyjs/react';
-// import 'tippy.js/dist/tippy.css';
-// import 'tippy.js/themes/light-border.css';
-import { List, ListItem, ListItemText } from '@material-ui/core';
+import React, { useState } from 'react';
+import { List, ListItem, ListItemText, Tooltip as MuiTooltip } from '@material-ui/core';
 import { GoGlobe as GlobeIcon } from 'react-icons/go';
 import { FaWhatsapp as WhatsappIcon } from 'react-icons/fa';
 import styled from 'styled-components';
 import {
     getBreakpointAndDown,
     getBreakpointAndUp,
+    getCommonColor,
     getPrimaryColor,
     getSecondaryColor,
 } from '../../../utils/ThemeSelectors';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { selectI18nLocale } from '../../redux/i18n/i18nSelectors';
-// import { setLocale } from '../../redux/i18n/i18nActions';
-// import { Translate } from 'react-redux-i18n';
+import { useRouter } from 'next/router';
+import { useI18n } from 'next-localization';
 
 const phoneNumber = '054-6629179';
 
@@ -24,7 +20,18 @@ const languages = [
     { locale: 'en', name: 'English' },
 ];
 
-const AdditionalControlWrapper = styled.div`
+const Tooltip = styled(MuiTooltip)`
+    background-color: ${getCommonColor('white')};
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 11px;
+    &.tc-tooltip {
+        background-color: ${getCommonColor('white')};
+        color: rgba(0, 0, 0, 0.87);
+        font-size: 11px;
+    }
+`;
+
+const ControlWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,12 +65,13 @@ const AdditionalControlWrapper = styled.div`
     }
 `;
 
-export default function UpperNavBarAdditionalControls() {
+export default function UpperNavBarControls() {
     const [visibleTooltip, setVisibleTooltip] = useState(null);
 
-    const dispatch = useDispatch();
+    const router = useRouter();
+    const { pathname, locale: currentLocale } = router;
 
-    const i18nLocale = useSelector(selectI18nLocale);
+    const { t } = useI18n();
 
     const handleWhatsappClick = () => {
         window.open(
@@ -81,33 +89,24 @@ export default function UpperNavBarAdditionalControls() {
     const renderContactMenu = () => (
         <List aria-label="contact-options">
             <ListItem button onClick={handleWhatsappClick}>
-                <ListItemText
-                    primary={<Translate value={'contactActions.sendWhatsappMessage'} />}
-                />
+                <ListItemText primary={t('contactActions.sendWhatsappMessage')} />
             </ListItem>
             <ListItem button onClick={handlePhoneClick}>
-                <ListItemText
-                    primary={
-                        <>
-                            <Translate value={'contactActions.dial'} /> {phoneNumber}
-                        </>
-                    }
-                />
+                <ListItemText primary={`${t('contactActions.dial')} ${phoneNumber}`} />
             </ListItem>
         </List>
     );
 
-    const handleLanguageChange = locale => {
-        dispatch(setLocale(locale));
-        setVisibleTooltip(null);
+    const handleLanguageChange = (locale) => {
+        router.push(pathname, pathname, { locale });
     };
 
     const renderLanguageMenu = () => (
         <List aria-label="language-options">
             {languages.map(({ locale, name }) => (
                 <ListItem
-                    selected={i18nLocale === locale}
-                    disabled={i18nLocale === locale}
+                    selected={currentLocale === locale}
+                    disabled={currentLocale === locale}
                     key={locale}
                     button
                     onClick={() => handleLanguageChange(locale)}
@@ -133,31 +132,29 @@ export default function UpperNavBarAdditionalControls() {
         },
     ];
 
-    const showTooltip = tooltipName => {
+    const showTooltip = (tooltipName) => {
         setVisibleTooltip(visibleTooltip !== tooltipName ? tooltipName : null);
     };
 
     return controlList.map(({ name, tooltipContent, isTooltipVisible, icon }) => (
-        <Fragment key={name}>
-            <Tippy
-                content={tooltipContent}
-                theme={'light-border'}
-                interactive
-                appendTo={document.body}
-                placement={'bottom'}
-                arrow
-                visible={isTooltipVisible}
-                onHide={() => setVisibleTooltip(null)}
+        <Tooltip
+            key={name}
+            classes={{ tooltip: 'tc-tooltip' }}
+            title={tooltipContent}
+            arrow
+            placement={'bottom'}
+            open={isTooltipVisible}
+            onClose={() => setVisibleTooltip(null)}
+            interactive
+        >
+            <ControlWrapper
+                aria-controls={name}
+                aria-haspopup={'true'}
+                onClick={() => showTooltip(name)}
+                selected={name === visibleTooltip}
             >
-                <AdditionalControlWrapper
-                    aria-controls={name}
-                    aria-haspopup={'true'}
-                    onClick={() => showTooltip(name)}
-                    selected={name === visibleTooltip}
-                >
-                    {icon}
-                </AdditionalControlWrapper>
-            </Tippy>
-        </Fragment>
+                {icon}
+            </ControlWrapper>
+        </Tooltip>
     ));
 }

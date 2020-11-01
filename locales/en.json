@@ -1,0 +1,130 @@
+{
+    "pageNames": {
+        "cakes": "Cakes",
+        "cupDesserts": "Cup Desserts",
+        "boxSets": "Box Sets"
+    },
+    "contactActions": {
+        "sendWhatsappMessage": "Send via Whatsapp",
+        "dial": "Dial:"
+    },
+    "actions": {
+        "areYouBusinessCustomer": "Business customer?",
+        "submit": "Submit",
+        "cancel": "Cancel"
+    },
+    "footer": {
+        "followUs": "Follow us on social media:",
+        "about": "About",
+        "siteMap": "Site Map",
+        "poweredBy": "Powered by: Avas-Dosh Tech LTD©"
+    },
+    "common": {
+        "thanks": "Thanks",
+        "cancel": "Cancel",
+        "ok": "OK",
+        "next": "Next",
+        "back": "Back"
+    },
+    "form": {
+        "required": "This field is required"
+    },
+    "areas": {
+        "global": "Global",
+        "merkaz": "Center",
+        "zafon": "North",
+        "darom": "South"
+    },
+    "products": {
+        "purchase": "Purchase",
+        "dairy": "Dairy",
+        "parve": "Parve",
+        "glutenFree": "Gluten Free",
+        "shekels": "Shekels"
+    },
+    "deliveryCities": {
+        "telAviv": "Tel Aviv",
+        "ramatGan": "Ramat Gan",
+        "givatayim": "Givatayim",
+        "rishonLezion": "Rishon Lezion",
+        "holon": "Holon",
+        "petahTikva": "Petah Tikva",
+        "kiryatOno": "Kiryat Ono",
+        "raanana": "Raanana",
+        "orYehuda": "Or Yehuda",
+        "yahud": "Yahud"
+    },
+    "order": {
+        "purchase": "Purchase",
+        "productDetails": "Product Details",
+        "customerDetails": "Customer Details",
+        "finalPrice": "Final price",
+        "deliveryMethod": "Delivery method",
+        "pickup": "Pickup",
+        "delivery": "Delivery",
+        "deliveryExtraPayment": "(+30 ILS)",
+        "pickupDateTime": "Pickup date/time",
+        "deliveryDateTime": "Delivery date/time",
+        "deliveryCity": "City",
+        "deliveryAddress": "Full Address",
+        "fullName": "Full Name",
+        "phoneNumber": "Phone Number",
+        "orderNotes": "Notes",
+        "orderProcessing": {
+            "justAMoment": "Just a moment...",
+            "processing": "We are processing your order."
+        },
+        "orderError": {
+            "sorry": "We're sorry, an error has occurred.",
+            "unableToReceive": "We're unable to process your order at the moment.",
+            "contact": "Please contact us via phone or WhatsApp at 054-6629179 to handle your order."
+        },
+        "orderSuccess": {
+            "submitted": "You order has been successfully submitted!",
+            "payment": "We will contact you soon to confirm the order details and address the payment.",
+            "thankYou": "Thank you for choosing Tuticake!",
+            "backToMainPage": "Back to main page"
+        }
+    },
+    "error": {
+        "generalErrorMessage": "It seems we're having some trouble loading this page. Please try again later."
+    },
+    "comingSoon": {
+        "construction": "This page is still under construction.",
+        "socialMedia": "Follow us on social media to know when it comes.",
+        "whenItComes": "And when it does... it'll be so deliciously good!"
+    },
+    "cakes": {
+        "questions": {
+            "topping": {
+                "question": "Would you like anything special on top?",
+                "example": "e.g., chocolate frosting, whipped cream, Oreo cookies..."
+            },
+            "flavors": {
+                "question": "Would you like any specific flavors?",
+                "example": "e.g., vanilla layer followed by a cookie layer, Lotus cookie crumbles..."
+            },
+            "writing": {
+                "question": "Would you like any special writing? If so, please specify where.",
+                "example": "e.g., the words 'Happy birthday, my love' on the plate of the cake, the number '18' on top..."
+            },
+            "productNotes": {
+                "question": "Are there any other special notes you would like to make?",
+                "example": " "
+            }
+        }
+    },
+    "cupDesserts": {
+        "introduction": {
+            "1": "Is your boyfriend/girlfriend's birthday coming up and you're not sure what to get?",
+            "2": "Do you want to suprise a relative with a delicious treat?",
+            "3": "Here's the solution for you!",
+            "4": "Cup dessert in a various flavors: Lotus, Ferrero Rocher, Kinder Bueno, Kinder Chocolate, Hershey's and Oreo",
+            "5": "Assemble the perfect cup desserts package!"
+        },
+        "startOrder": "Start order",
+        "pickQuantity": "How many cup desserts would you like in your box?",
+        "pickflavors": "Which and how many of each flavour would you like?",
+        "customFlavorNotice": "By the way, we noticed you wanted some custom flavors, we'll be sure to talk about it when we contact you."
+    }
+}

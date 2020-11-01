@@ -8,15 +8,15 @@ import {
 } from '../../utils/ThemeSelectors';
 import AnimatedLogoHeb from './AnimatedLogoHeb';
 import AnimatedLogoEng from './AnimatedLogoEng';
-import { ReactComponent as LogoCupcakeSvg } from '../../public/logo-cupcake.svg';
+import LogoCupcakeSvg from '../../public/logo-cupcake.svg';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
-import { useSelector } from 'react-redux';
-import { selectI18nLocale } from '../../redux/i18n/i18nSelectors';
 import { useQuery, useQueryCache } from 'react-query';
 import { CAKES, CUP_DESSERTS_BOX_SETS, PROFILE_IMAGE } from '../../utils/query';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 const HeaderSection = styled.div`
     display: flex;
@@ -184,23 +184,23 @@ const ProfileImageSkeleton = styled(Skeleton).attrs(() => ({
 `;
 
 export default function LandingPage() {
-    const locale = useSelector(selectI18nLocale);
+    const { locale } = useRouter();
 
     const AnimatedLogo = locale === 'he' ? AnimatedLogoHeb : AnimatedLogoEng;
 
-    const { data: profileImageUrl, isLoading } = useQuery(PROFILE_IMAGE);
+    // const { data: profileImageUrl, isLoading } = useQuery(PROFILE_IMAGE);
 
-    const cache = useQueryCache();
+    // const cache = useQueryCache();
 
-    console.log('profileImageUrl:', profileImageUrl);
+    // console.log('profileImageUrl:', profileImageUrl);
 
-    const prefetchData = useCallback(async () => {
-        await Promise.all([cache.prefetchQuery(CAKES), cache.prefetchQuery(CUP_DESSERTS_BOX_SETS)]);
-    }, [cache]);
+    // const prefetchData = useCallback(async () => {
+    //     await Promise.all([cache.prefetchQuery(CAKES), cache.prefetchQuery(CUP_DESSERTS_BOX_SETS)]);
+    // }, [cache]);
 
-    useEffect(() => {
-        prefetchData();
-    }, [prefetchData]);
+    // useEffect(() => {
+    //     prefetchData();
+    // }, [prefetchData]);
 
     return (
         <LandingPageWrapper>
@@ -230,11 +230,13 @@ export default function LandingPage() {
                 <Grid item>
                     <ProfileImageCard>
                         <ProfileImageCardContent>
-                            {!profileImageUrl || isLoading ? (
-                                <ProfileImageSkeleton />
-                            ) : (
-                                <ProfileImage src={profileImageUrl} />
-                            )}
+                            {/*{!profileImageUrl || isLoading ? (*/}
+                            {/*    <ProfileImageSkeleton />*/}
+                            {/*) : (*/}
+                            {/*    <Image alt={'profile'} src={'./public/profile.jpeg'} />*/}
+                            {/*)}*/}
+                            <Image alt={'profile'} src={'/profile.jpeg'} height={'20%'} width={116.2} />
+
                         </ProfileImageCardContent>
                     </ProfileImageCard>
                 </Grid>
