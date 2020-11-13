@@ -49,7 +49,7 @@ const SubtitleAnimation = keyframes`
     }
 `;
 
-const AnimatedLogo = styled(Logo)`
+export default styled(Logo)`
     ${getBreakpointAndUp('md')} {
         height: 140px;
     }
@@ -64,22 +64,22 @@ const AnimatedLogo = styled(Logo)`
 
     margin-block-start: 30px;
 
-    .logo-cake,
-    .logo-tuti {
+    .logo-heb_svg__logo-cake,
+    .logo-heb_svg__logo-tuti {
         fill: transparent;
         stroke-dasharray: 0;
         stroke-width: 1px;
         stroke: ${getCommonColor('white')};
         animation: ${LetterAnimation} 3s forwards;
 
-        &.punctuation {
+        &.logo-heb_svg__punctuation {
             stroke-width: 1px;
             opacity: 0;
             animation: ${PunctuationAnimation} 2s 1s linear forwards;
         }
     }
 
-    .logo-divider {
+    .logo-heb_svg__logo-divider {
         fill: transparent;
         opacity: 0;
         stroke: ${getCommonColor('white')};
@@ -88,13 +88,13 @@ const AnimatedLogo = styled(Logo)`
         animation: ${DividerAnimation} 500ms 2.5s linear forwards;
     }
 
-    .logo-subtitle-group {
+    .logo-heb_svg__logo-subtitle-group {
         clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
         animation: ${SubtitleAnimation} 1s 3s forwards;
         fill: ${getCommonColor('white')};
     }
 `;
 
-export default function AnimatedLogoHeb() {
-    return <AnimatedLogo />;
-}
+// export default function AnimatedLogoHeb() {
+//     return <AnimatedLogo />;
+// }

@@ -1,17 +1,23 @@
 import React from 'react';
-import { Button as MuiButton, Dialog, DialogContent, Grid, Typography } from '@material-ui/core';
-import { I18n, Translate } from 'react-redux-i18n';
+import {
+    Button as MuiButton,
+    Dialog,
+    DialogContent,
+    Grid,
+    Typography,
+    CircularProgress,
+} from '@material-ui/core';
 import styled from 'styled-components';
-import { ReactComponent as CupcakeSvg } from '../../public/logo-cupcake.svg';
+import CupcakeSvg from '../../public/logo-cupcake.svg';
 import {
     getCommonColor,
     getGradient,
     getPrimaryColor,
     getSecondaryColor,
 } from '../../utils/ThemeSelectors';
-import { useHistory } from 'react-router-dom';
 import { FaSadTear } from 'react-icons/fa';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { useRouter } from 'next/router';
+import { useI18n } from 'next-localization';
 
 const CupcakeIcon = styled(CupcakeSvg)`
     fill: ${getSecondaryColor()};
@@ -32,7 +38,9 @@ const Button = styled(MuiButton)`
 export default function OrderSentDialog(props) {
     const { isOpen, isProcessing, hasError, children } = props;
 
-    const history = useHistory();
+    const { t } = useI18n();
+
+    const router = useRouter();
 
     const renderErrorMessage = () => (
         <>
@@ -41,9 +49,9 @@ export default function OrderSentDialog(props) {
             </Grid>
 
             <Grid item>
-                <Message variant={'h5'}>{I18n.t('order.orderError.sorry')}</Message>
-                <Message variant={'h5'}>{I18n.t('order.orderError.unableToReceive')}</Message>
-                <Message variant={'h5'}>{I18n.t('order.orderError.contact')}</Message>
+                <Message variant={'h5'}>{t('order.orderError.sorry')}</Message>
+                <Message variant={'h5'}>{t('order.orderError.unableToReceive')}</Message>
+                <Message variant={'h5'}>{t('order.orderError.contact')}</Message>
             </Grid>
         </>
     );
@@ -55,8 +63,8 @@ export default function OrderSentDialog(props) {
             </Grid>
 
             <Grid item>
-                <Message variant={'h5'}>{I18n.t('order.orderProcessing.justAMoment')}</Message>
-                <Message variant={'h5'}>{I18n.t('order.orderProcessing.processing')}</Message>
+                <Message variant={'h5'}>{t('order.orderProcessing.justAMoment')}</Message>
+                <Message variant={'h5'}>{t('order.orderProcessing.processing')}</Message>
             </Grid>
         </>
     );
@@ -68,15 +76,9 @@ export default function OrderSentDialog(props) {
             </Grid>
 
             <Grid item>
-                <Message variant={'h5'}>
-                    <Translate value={'order.orderSuccess.submitted'} />
-                </Message>
-                <Message variant={'h5'}>
-                    <Translate value={'order.orderSuccess.payment'} />
-                </Message>
-                <Message variant={'h5'}>
-                    <Translate value={'order.orderSuccess.thankYou'} />
-                </Message>
+                <Message variant={'h5'}>{t('order.orderSuccess.submitted')}</Message>
+                <Message variant={'h5'}>{t('order.orderSuccess.payment')} </Message>
+                <Message variant={'h5'}>{t('order.orderSuccess.thankYou')}</Message>
             </Grid>
         </>
     );
@@ -94,8 +96,8 @@ export default function OrderSentDialog(props) {
                     {children}
 
                     <Grid item>
-                        <Button onClick={() => history.push('/')}>
-                            <Translate value={'order.orderSuccess.backToMainPage'} />
+                        <Button onClick={() => router.push('/')}>
+                            {t('order.orderSuccess.backToMainPage')}
                         </Button>
                     </Grid>
                 </Grid>

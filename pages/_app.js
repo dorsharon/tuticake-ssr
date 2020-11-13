@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import UpperNavBar from '../components/layout/nav-bar/UpperNavBar';
+import UpperNavBar from '../components/layout/header/UpperNavBar';
 import Footer from '../components/layout/footer';
-import BottomNavBar from '../components/layout/nav-bar/BottomNavBar';
+import BottomNavBar from '../components/layout/header/BottomNavBar';
 import styled, { createGlobalStyle, ThemeProvider as ScThemeProvider } from 'styled-components';
 import { jssPreset, StylesProvider } from '@material-ui/core/styles';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/styles';
@@ -19,10 +19,29 @@ import { lightThemeLtr, lightThemeRtl } from '../utils/theme';
 import { I18nProvider } from 'next-localization';
 import HE from '../locales/he.json';
 import EN from '../locales/en.json';
+import { Hydrate } from 'react-query/hydration';
 
 const MainLayoutWrapper = styled.div`
+    height: 100vh;
     display: grid;
-    grid-template-rows: minmax(auto, 200px) 1fr 50px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+        'header'
+        'main'
+        'footer';
+
+    & > header {
+        grid-area: header;
+    }
+
+    & > main {
+        grid-area: main;
+    }
+
+    & > footer {
+        grid-area: footer;
+    }
 `;
 
 const MainContent = styled.main`
@@ -76,26 +95,28 @@ function MyApp({ Component, pageProps }) {
                         <ScThemeProvider theme={theme}>
                             <MuiPickersUtilsProvider utils={LuxonUtils} locale={locale}>
                                 <ReactQueryCacheProvider queryCache={queryCache}>
-                                    <GlobalStyles />
+                                    <Hydrate state={pageProps.dehydratedState}>
+                                        <GlobalStyles />
 
-                                    <I18nProvider locale={locale} lngDict={langDictionary}>
-                                        <MainLayoutWrapper>
-                                            <UpperNavBar />
+                                        <I18nProvider locale={locale} lngDict={langDictionary}>
+                                            <MainLayoutWrapper>
+                                                <UpperNavBar />
 
-                                            <MainContent>
-                                                <Component {...pageProps} />
-                                            </MainContent>
+                                                <MainContent>
+                                                    <Component {...pageProps} />
+                                                </MainContent>
 
-                                            <Footer />
+                                                <Footer />
 
-                                            <BottomNavBar />
-                                        </MainLayoutWrapper>
-                                    </I18nProvider>
+                                                <BottomNavBar />
+                                            </MainLayoutWrapper>
+                                        </I18nProvider>
 
-                                    <ReactQueryDevtools
-                                        initialIsOpen={false}
-                                        panelProps={{ dir: 'ltr' }}
-                                    />
+                                        <ReactQueryDevtools
+                                            initialIsOpen={false}
+                                            panelProps={{ dir: 'ltr' }}
+                                        />
+                                    </Hydrate>
                                 </ReactQueryCacheProvider>
                             </MuiPickersUtilsProvider>
                         </ScThemeProvider>

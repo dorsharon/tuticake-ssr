@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-class HttpClient {
+class Http {
     async get(url, params, options = {}) {
         const response = await fetch(`${url}?${queryString.stringify(params)}`, {
             method: 'GET',
@@ -58,4 +58,4 @@ class HttpClient {
     }
 }
 
-export default new HttpClient();
+export default new Http();

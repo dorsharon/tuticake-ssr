@@ -87,7 +87,8 @@
         }
     },
     "error": {
-        "generalErrorMessage": "It seems we're having some trouble loading this page. Please try again later."
+        "generalErrorMessage": "It seems we're having some trouble loading this page. Please try again later.",
+        "404": "We can't seem to find this page."
     },
     "comingSoon": {
         "construction": "This page is still under construction.",

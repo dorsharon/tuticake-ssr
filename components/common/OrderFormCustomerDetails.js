@@ -1,5 +1,4 @@
 import React from 'react';
-import { I18n, Translate } from 'react-redux-i18n';
 import { TextField as MuiTextField } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -8,11 +7,12 @@ import { DateTimePicker } from '@material-ui/pickers';
 import { getBreakpointAndDown } from '../../utils/ThemeSelectors';
 import styled from 'styled-components';
 import { DevTool } from '@hookform/devtools';
+import { useI18n } from 'next-localization';
 
 const FormWrapper = styled.div`
     align-self: center;
     display: grid;
-    grid-template-rows: repeat(${props => (props.$deliveryMode ? '4' : '3')}, 50px);
+    grid-template-rows: repeat(${(props) => (props.$deliveryMode ? '4' : '3')}, 50px);
     grid-template-columns: repeat(2, 200px);
     column-gap: 35px;
 
@@ -58,15 +58,17 @@ const deliveryCitiesKeys = [
 ];
 
 export default function OrderFormCustomerDetails() {
+    const { t } = useI18n();
+
     const { register, watch, control, errors } = useFormContext();
 
     const deliveryMethod = watch('deliveryMethod');
 
-    const textFieldProps = name => ({
+    const textFieldProps = (name) => ({
         className: name,
         name,
-        label: <Translate value={`order.${name}`} />,
-        inputRef: register({ required: I18n.t('form.required') }),
+        label: t(`order.${name}`),
+        inputRef: register({ required: t('form.required') }),
         fullWidth: true,
         error: !!errors?.[name],
         helperText: errors?.[name]?.message,
@@ -81,7 +83,7 @@ export default function OrderFormCustomerDetails() {
                 name={'phoneNumber'}
                 defaultValue={''}
                 rules={{
-                    required: I18n.t('form.required'),
+                    required: t('form.required'),
                     minLength: 10,
                 }}
                 render={({ onChange }) => (
@@ -98,16 +100,14 @@ export default function OrderFormCustomerDetails() {
             <Controller
                 name={'deliveryMethod'}
                 defaultValue={'pickup'}
-                rules={{ required: I18n.t('form.required') }}
+                rules={{ required: t('form.required') }}
                 render={({ onChange, onBlur }) => (
                     <Autocomplete
                         options={['pickup', 'delivery']}
-                        getOptionLabel={opt =>
+                        getOptionLabel={(opt) =>
                             opt === 'pickup'
-                                ? I18n.t('order.pickup')
-                                : `${I18n.t('order.delivery')} ${I18n.t(
-                                      'order.deliveryExtraPayment',
-                                  )}`
+                                ? t('order.pickup')
+                                : `${t('order.delivery')} ${t('order.deliveryExtraPayment')}`
                         }
                         onBlur={onBlur}
                         onChange={(e, value) => {
@@ -115,8 +115,8 @@ export default function OrderFormCustomerDetails() {
                         }}
                         disableClearable
                         defaultValue={'pickup'}
-                        renderInput={params => (
-                            <TextField {...params} label={I18n.t('order.deliveryMethod')} />
+                        renderInput={(params) => (
+                            <TextField {...params} label={t('order.deliveryMethod')} />
                         )}
                     />
                 )}
@@ -125,11 +125,11 @@ export default function OrderFormCustomerDetails() {
             <Controller
                 name={'deliveryDateTime'}
                 defaultValue={null}
-                rules={{ required: I18n.t('form.required') }}
+                rules={{ required: t('form.required') }}
                 render={({ onChange, onBlur, value }) => (
                     <DateTimePicker
                         {...textFieldProps('deliveryDateTime')}
-                        label={I18n.t(
+                        label={t(
                             deliveryMethod === 'pickup'
                                 ? 'order.pickupDateTime'
                                 : 'order.deliveryDateTime',
@@ -140,8 +140,8 @@ export default function OrderFormCustomerDetails() {
                         onChange={onChange}
                         ampm={false}
                         disablePast
-                        cancelLabel={I18n.t('common.cancel')}
-                        okLabel={I18n.t('common.ok')}
+                        cancelLabel={t('common.cancel')}
+                        okLabel={t('common.ok')}
                         format={'dd/MM/yyyy, hh:mm'}
                     />
                 )}
@@ -152,17 +152,17 @@ export default function OrderFormCustomerDetails() {
                     <Controller
                         name={'deliveryCity'}
                         defaultValue={null}
-                        rules={{ required: I18n.t('form.required') }}
+                        rules={{ required: t('form.required') }}
                         render={({ onChange, onBlur }) => (
                             <Autocomplete
                                 options={deliveryCitiesKeys}
-                                getOptionLabel={opt => I18n.t(`deliveryCities.${opt}`)}
+                                getOptionLabel={(opt) => t(`deliveryCities.${opt}`)}
                                 onBlur={onBlur}
                                 onChange={(e, value) => {
                                     onChange(value);
                                 }}
                                 defaultValue={null}
-                                renderInput={params => (
+                                renderInput={(params) => (
                                     <TextField {...textFieldProps('deliveryCity')} {...params} />
                                 )}
                             />

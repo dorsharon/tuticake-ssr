@@ -1,9 +1,4 @@
+import React from 'react';
 import LandingPage from '../components/landing-page';
 
-export default function Root() {
-    return (
-        <>
-            <LandingPage/>
-        </>
-    );
-}
+export default LandingPage;

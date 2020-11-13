@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Grid, Typography } from '@material-ui/core';
 import { FaSadTear } from 'react-icons/fa';
-import { getBreakpointAndDown, getBreakpointAndUp } from '../../../utils/ThemeSelectors';
+import { getBreakpointAndDown, getBreakpointAndUp } from '../utils/ThemeSelectors';
 import { useI18n } from 'next-localization';
 
 const ErrorWrapper = styled.div`
@@ -37,7 +37,7 @@ export default function GeneralError() {
             </Grid>
 
             <Grid item>
-                <Typography variant={'h5'}>{t('error.generalErrorMessage')}</Typography>
+                <Typography variant={'h5'}>{t('error.404')}</Typography>
             </Grid>
         </Grid>
     );

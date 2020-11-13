@@ -1,4 +1,4 @@
-import http from '../../../utils/HttpClient';
+import http from '../../../utils/http';
 import { getFunctionUrl } from '../../../utils/Firebase';
 import { getCanUseWebp } from '../../../utils/BrowserSupport';
 

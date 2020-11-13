@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {
     getBackgroundColor,
@@ -12,8 +12,6 @@ import LogoCupcakeSvg from '../../public/logo-cupcake.svg';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
-import { useQuery, useQueryCache } from 'react-query';
-import { CAKES, CUP_DESSERTS_BOX_SETS, PROFILE_IMAGE } from '../../utils/query';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
@@ -188,20 +186,6 @@ export default function LandingPage() {
 
     const AnimatedLogo = locale === 'he' ? AnimatedLogoHeb : AnimatedLogoEng;
 
-    // const { data: profileImageUrl, isLoading } = useQuery(PROFILE_IMAGE);
-
-    // const cache = useQueryCache();
-
-    // console.log('profileImageUrl:', profileImageUrl);
-
-    // const prefetchData = useCallback(async () => {
-    //     await Promise.all([cache.prefetchQuery(CAKES), cache.prefetchQuery(CUP_DESSERTS_BOX_SETS)]);
-    // }, [cache]);
-
-    // useEffect(() => {
-    //     prefetchData();
-    // }, [prefetchData]);
-
     return (
         <LandingPageWrapper>
             <HeaderSection>
@@ -230,13 +214,12 @@ export default function LandingPage() {
                 <Grid item>
                     <ProfileImageCard>
                         <ProfileImageCardContent>
-                            {/*{!profileImageUrl || isLoading ? (*/}
-                            {/*    <ProfileImageSkeleton />*/}
-                            {/*) : (*/}
-                            {/*    <Image alt={'profile'} src={'./public/profile.jpeg'} />*/}
-                            {/*)}*/}
-                            <Image alt={'profile'} src={'/profile.jpeg'} height={'20%'} width={116.2} />
-
+                            <Image
+                                alt={'profile'}
+                                src={'/profile.jpeg'}
+                                height={220.5}
+                                width={160}
+                            />
                         </ProfileImageCardContent>
                     </ProfileImageCard>
                 </Grid>

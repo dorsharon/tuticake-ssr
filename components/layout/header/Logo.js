@@ -33,13 +33,17 @@ const LogoTitle = styled.svg`
     height: 70%;
     overflow: visible;
 
-    .logo-tuti,
-    .logo-subtitle,
-    .logo-divider {
+    .logo-eng_svg__logo-tuti,
+    .logo-heb_svg__logo-tuti,
+    .logo-eng_svg__logo-subtitle,
+    .logo-heb_svg__logo-subtitle,
+    .logo-eng_svg__logo-divider,
+    .logo-heb_svg__logo-divider {
         fill: ${getPrimaryColor()};
     }
 
-    .logo-cake {
+    .logo-eng_svg__logo-cake,
+    .logo-heb_svg__logo-cake {
         fill: ${getSecondaryColor()};
     }
 `;

@@ -1,5 +1,5 @@
 import email from 'emailjs-com';
-import settings from '../settings';
+import settings from './settings';
 
 const { emailJsServiceId, emailJsNewOrderTemplateId, emailJsUserId } = settings;
 

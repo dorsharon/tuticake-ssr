@@ -2,18 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { Grid, Typography, Divider as MuiDivider } from '@material-ui/core';
 import ImageCarousel from '../products/ImageCarousel';
-import { useSelector } from 'react-redux';
-import { selectI18nLocale } from '../../redux/i18n/i18nSelectors';
 import {
     getPrimaryColor,
     getBreakpointAndDown,
     getBreakpointAndUp,
 } from '../../utils/ThemeSelectors';
-import { useParams } from 'react-router-dom';
-import useProducts from '../common/hooks/useProducts';
-import GeneralError from '../common/errors/GeneralError';
-import Skeleton from '@material-ui/lab/Skeleton';
 import CakeFormOrder from './CakeOrderForm';
+import { useRouter } from 'next/router';
+import { QueryCache, useQuery } from 'react-query';
+import { PRODUCT, PRODUCTS } from '../../utils/query';
+import { dehydrate } from 'react-query/hydration';
 
 const CakeProductDetailsWrapper = styled.div`
     ${getBreakpointAndUp('md')} {
@@ -48,61 +46,39 @@ const Divider = styled(MuiDivider)`
     background-color: ${getPrimaryColor()};
 `;
 
-export default function CakeProductDetails() {
-    const { productId } = useParams();
+export default function CakeProductDetails({ id }) {
+    const { data: product } = useQuery([PRODUCT, id]);
 
-    const {
-        data: { [productId]: product = {} },
-        isLoading,
-        hasError,
-    } = useProducts({
-        asObject: true,
-        productType: 'cake',
-    });
+    const { nameHe = '', nameEn = '', descriptionHe = '', descriptionEn = '', images = [] } =
+        product ?? {};
 
-    const {
-        nameHe = '',
-        nameEn = '',
-        descriptionHe = '',
-        descriptionEn = '',
-        images = [],
-    } = product;
-
-    const locale = useSelector(selectI18nLocale);
+    const { locale } = useRouter();
 
     const name = locale === 'he' ? nameHe : nameEn;
     const description = locale === 'he' ? descriptionHe : descriptionEn;
 
-    if (!productId) {
+    if (!product) {
         return null;
-    }
-
-    if (hasError) {
-        return <GeneralError />;
     }
 
     return (
         <Grid container component={CakeProductDetailsWrapper} alignItems={'center'} spacing={6}>
             <Grid item sm={12} md={6}>
                 <ProductInfoWrapper>
-                    {isLoading ? (
-                        <Skeleton variant={'rect'} height={400} />
-                    ) : (
-                        <>
-                            <ImageCarousel images={images} maxHeight={400} />
+                    <>
+                        <ImageCarousel images={images.webp} maxHeight={400} />
 
-                            <Divider />
+                        <Divider />
 
-                            <ProductName>{name}</ProductName>
+                        <ProductName>{name}</ProductName>
 
-                            <ProductDescription>{description}</ProductDescription>
-                        </>
-                    )}
+                        <ProductDescription>{description}</ProductDescription>
+                    </>
                 </ProductInfoWrapper>
             </Grid>
 
             <Grid item sm={12} md={6}>
-                <CakeFormOrder />
+                <CakeFormOrder product={product} />
             </Grid>
         </Grid>
     );

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Grid, Typography, useMediaQuery } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { useQuery, useQueryCache } from 'react-query';
 import {
     getBreakpointAndDown,
@@ -9,7 +9,6 @@ import {
     getGradient,
     getPrimaryColor,
 } from '../../utils/ThemeSelectors';
-import { Translate } from 'react-redux-i18n';
 import { Skeleton } from '@material-ui/lab';
 import { Button } from '@material-ui/core';
 import CupDessertsOrderForm from './CupDessertsOrderForm';
@@ -18,6 +17,7 @@ import {
     CUP_DESSERTS_BOX_SETS,
     CUP_DESSERTS_EXAMPLE_IMAGES,
 } from '../../utils/query';
+import { useI18n } from 'next-localization';
 
 const CupDessertsWrapper = styled.div`
     display: grid;
@@ -96,9 +96,9 @@ const ExampleImage = styled.img`
 `;
 
 export default function CupDesserts() {
-    const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
+    const { t } = useI18n();
 
-    const isInBreakpointSm = useMediaQuery(theme => getBreakpointAndDown('sm')({ theme }));
+    const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
 
     const cache = useQueryCache();
 
@@ -136,14 +136,12 @@ export default function CupDesserts() {
                 <CupDessertsOrderForm />
             ) : (
                 <Grid container direction={'column'} alignItems={'center'} justify={'center'}>
-                    {['1', '2', '3', '4', '5'].map(i => (
-                        <Introduction key={i}>
-                            <Translate value={`cupDesserts.introduction.${i}`} />
-                        </Introduction>
+                    {['1', '2', '3', '4', '5'].map((i) => (
+                        <Introduction key={i}>{t(`cupDesserts.introduction.${i}`)}</Introduction>
                     ))}
 
                     <StartOrderButton size={'large'} onClick={() => setIsOrderFormOpen(true)}>
-                        <Translate value={'cupDesserts.startOrder'} />
+                        {t('cupDesserts.startOrder')}
                     </StartOrderButton>
                 </Grid>
             )}

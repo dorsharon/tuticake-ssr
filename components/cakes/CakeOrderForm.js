@@ -7,20 +7,14 @@ import {
     Button as MuiButton,
 } from '@material-ui/core';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Translate, I18n } from 'react-redux-i18n';
 import { getCommonColor, getGradient, getBreakpointAndDown } from '../../utils/ThemeSelectors';
-import { useParams } from 'react-router-dom';
-import useProducts from '../common/hooks/useProducts';
-import GeneralError from '../common/errors/GeneralError';
-import Skeleton from '@material-ui/lab/Skeleton';
-import { sendNewOrder } from '../../utils/Email';
 import { motion, AnimatePresence } from 'framer-motion';
 import OrderFormCustomerDetails from '../common/OrderFormCustomerDetails';
 import OrderSentDialog from '../common/OrderSentDialog';
 import { useImmer } from 'use-immer';
-import CakeOrderItem from '../../utils/orders/CakeOrderItem';
-import Order from '../../utils/orders/Order';
 import { DateTime } from 'luxon';
+import { useI18n } from 'next-localization';
+import http from '../../utils/http';
 
 const Step1Wrapper = styled.div`
     display: grid;
@@ -81,8 +75,8 @@ const TotalPrice = styled(Typography)`
 
 const productDetailsKeys = ['topping', 'flavors', 'writing', 'productNotes'];
 
-export default function CakeFormOrder() {
-    const { productId } = useParams();
+export default function CakeFormOrder({ product }) {
+    const { t } = useI18n();
 
     const [{ formStep, step1Values }, setFormState] = useImmer({
         formStep: 1,
@@ -90,16 +84,7 @@ export default function CakeFormOrder() {
     });
     const [isOrderSentDialogOpen, setIsOrderSentDialogOpen] = useState(false);
 
-    const {
-        data: { [productId]: product = {} },
-        isLoading,
-        hasError,
-    } = useProducts({
-        asObject: true,
-        productType: 'cake',
-    });
-
-    const { nameHe = '', price } = product;
+    const { nameHe = '', price } = product ?? {};
 
     const formMethods = useForm();
     const {
@@ -112,61 +97,59 @@ export default function CakeFormOrder() {
     const totalPrice = price + (deliveryMethod === 'delivery' ? 30 : 0);
 
     const handleBack = () => {
-        setFormState(state => {
+        setFormState((state) => {
             state.formStep = Math.max(state.formStep - 1, 0);
         });
     };
 
-    const submitForm = async values => {
+    const submitForm = async (values) => {
         if (formStep === 1) {
-            setFormState(state => {
+            setFormState((state) => {
                 state.step1Values = values;
                 state.formStep = 2;
             });
         } else {
             setIsOrderSentDialogOpen(true);
 
-            await sendNewOrder(
-                new Order(
-                    { fullName: values.fullName, phoneNumber: values.phoneNumber },
+            const result = await http.post(`/orders`, {
+                customer: { fullName: values.fullName, phoneNumber: values.phoneNumber },
+                delivery: {
+                    method: values.deliveryMethod,
+                    dateTime: DateTime.fromFormat(values.deliveryDateTime, 'dd/MM/yyyy, hh:mm'),
+                    city: values.deliveryCity,
+                    address: values.deliveryAddress,
+                },
+                products: [
                     {
-                        method: values.deliveryMethod,
-                        dateTime: DateTime.fromFormat(values.deliveryDateTime, 'dd/MM/yyyy, hh:mm'),
-                        city: values.deliveryCity,
-                        address: values.deliveryAddress,
+                        type: 'cake',
+                        name: nameHe,
+                        extras: {
+                            topping: step1Values.topping,
+                            flavors: step1Values.flavors,
+                            writing: step1Values.writing,
+                        },
+                        notes: step1Values.productNotes,
                     },
-                    [
-                        new CakeOrderItem(
-                            nameHe,
-                            {
-                                topping: step1Values.topping,
-                                flavors: step1Values.flavors,
-                                writing: step1Values.writing,
-                            },
-                            step1Values.productNotes,
-                        ),
-                    ],
-                    values.orderNotes,
-                    totalPrice,
-                ),
-            );
+                ],
+                orderNotes: values.orderNotes,
+                totalPrice,
+            });
         }
     };
 
     const renderStep1 = () => (
         <>
             <Step1Wrapper>
-                {productDetailsKeys.map(key => (
+                {productDetailsKeys.map((key) => (
                     <Fragment key={key}>
                         <Typography variant={'subtitle1'}>
-                            <Translate value={`cakes.questions.${key}.question`} />
+                            {t(`cakes.questions.${key}.question`)}
                         </Typography>
 
                         <TextField
                             name={key}
-                            disabled={isLoading}
                             inputRef={register}
-                            placeholder={I18n.t(`cakes.questions.${key}.example`)}
+                            placeholder={t(`cakes.questions.${key}.example`)}
                             fullWidth
                         />
                     </Fragment>
@@ -175,7 +158,7 @@ export default function CakeFormOrder() {
 
             <Grid container justify={'flex-end'}>
                 <Button type={'submit'} onClick={handleSubmit}>
-                    <Translate value={`common.next`} />
+                    {t(`common.next`)}
                 </Button>
             </Grid>
         </>
@@ -185,21 +168,16 @@ export default function CakeFormOrder() {
         <>
             <OrderFormCustomerDetails />
 
-            {isLoading ? (
-                <Skeleton variant={'text'} />
-            ) : (
-                <TotalPrice variant={'h5'}>
-                    <Translate value={'order.finalPrice'} />: {totalPrice}{' '}
-                    <Translate value={'products.shekels'} />
-                </TotalPrice>
-            )}
+            <TotalPrice variant={'h5'}>
+                {t('order.finalPrice')}: {totalPrice} {t('products.shekels')}
+            </TotalPrice>
 
             <Grid container justify={'space-between'}>
                 <BackButton variant={'outlined'} onClick={handleBack}>
-                    <Translate value={`common.back`} />
+                    {t('common.back')}
                 </BackButton>
 
-                <Button type={'submit'}>{I18n.t('order.purchase')}</Button>
+                <Button type={'submit'}>{t('order.purchase')}</Button>
             </Grid>
         </>
     );
@@ -215,12 +193,8 @@ export default function CakeFormOrder() {
         }
     };
 
-    if (!productId) {
+    if (!product) {
         return null;
-    }
-
-    if (hasError) {
-        return <GeneralError />;
     }
 
     return (

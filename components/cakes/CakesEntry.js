@@ -5,17 +5,19 @@ import { Grid, Button, Typography, CardContent, Card } from '@material-ui/core';
 import { useInView } from 'react-intersection-observer';
 import { getCommonColor, getFontFamily, getGradient } from '../../utils/ThemeSelectors';
 import { motion } from 'framer-motion';
-import { useSelector } from 'react-redux';
-import { selectI18nLocale } from '../../redux/i18n/i18nSelectors';
-import { Translate } from 'react-redux-i18n';
-import ImageCarousel from '../common/ImageCarousel';
-import { useHistory } from 'react-router-dom';
+import Carousel from '../common/ImageCarousel';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { useRouter } from 'next/router';
+import { useI18n } from 'next-localization';
 
 const CakesEntryWrapper = styled(Card)`
     position: relative;
     display: flex;
     flex-direction: column;
+`;
+
+const ImageCarousel = styled(Carousel)`
+    height: 200px;
 `;
 
 const PurchaseButton = styled(Button)`
@@ -50,7 +52,7 @@ const ProductPrice = styled(Typography).attrs(() => ({
 const InfoChip = styled.div`
     border-radius: 2px;
     font-size: 1rem;
-    background-color: ${props => props.backgroundColor};
+    background-color: ${(props) => props.backgroundColor};
     color: ${getCommonColor('white')};
     padding: 3px 6px;
     font-family: ${getFontFamily()};
@@ -69,14 +71,15 @@ export default function CakesEntry(props) {
     const { nameHe, nameEn, descriptionHe, descriptionEn, price, isDairy, isGlutenFree, images } =
         cake ?? {};
 
-    const history = useHistory();
+    const router = useRouter();
+    const { locale } = router;
+
+    const { t } = useI18n();
 
     const [ref, isInView] = useInView({
         threshold: 0.5,
         triggerOnce: true,
     });
-
-    const locale = useSelector(selectI18nLocale);
 
     const name = locale === 'he' ? nameHe : nameEn;
     const description = locale === 'he' ? descriptionHe : descriptionEn;
@@ -122,35 +125,31 @@ export default function CakesEntry(props) {
         >
             <ChipsWrapper>
                 <InfoChip backgroundColor={isDairy ? '#119ebe' : '#d40000'}>
-                    <Translate value={isDairy ? 'products.dairy' : 'products.parve'} />
+                    {t(isDairy ? 'products.dairy' : 'products.parve')}
                 </InfoChip>
 
                 {isGlutenFree && (
                     <Grid item>
-                        <InfoChip backgroundColor={'#8da100'}>
-                            <Translate value={'products.glutenFree'} />
-                        </InfoChip>
+                        <InfoChip backgroundColor={'#8da100'}>{t('products.glutenFree')}</InfoChip>
                     </Grid>
                 )}
             </ChipsWrapper>
 
-            <ImageCarousel images={images} maxHeight={200} />
+            <ImageCarousel images={images.png} />
 
             <CardContent>
                 <ProductTitle>{name}</ProductTitle>
 
                 <ProductDescription>{description}</ProductDescription>
 
-                <ProductPrice>
-                    {`${price} `} <Translate value={'products.shekels'} />
-                </ProductPrice>
+                <ProductPrice>{`${price} ${t('products.shekels')}`}</ProductPrice>
             </CardContent>
 
             <PurchaseButton
                 variant="contained"
-                onClick={() => history.push(`/products/cakes/${cake.id}`)}
+                onClick={() => router.push(`/products/cakes/${cake.id}`)}
             >
-                <Translate value={'products.purchase'} />
+                {t('products.purchase')}
             </PurchaseButton>
         </CakesEntryWrapper>
     );

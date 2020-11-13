@@ -6,12 +6,20 @@ import { getBackgroundColor, getPrimaryColor } from '../../utils/ThemeSelectors'
 import { Carousel as ReactCarousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { IconButton } from '@material-ui/core';
+import NextImage from 'next/image';
 
 const Carousel = styled(ReactCarousel)`
     direction: initial;
+    height: 100%;
 
     .control-dots {
         padding: 0;
+    }
+
+    .carousel,
+    .slider-wrapper,
+    .slider {
+        height: 100%;
     }
 `;
 
@@ -53,17 +61,19 @@ const ImageWrapper = styled.div`
     display: flex;
     background: ${getBackgroundColor()};
     padding: 10px;
-    max-height: ${props => props.maxHeight}px;
     height: 100%;
 `;
 
-const Image = styled.img`
+const Image = styled(NextImage)`
     object-fit: contain;
-    filter: drop-shadow(3px 3px 2px);
 `;
 
 export default function ImageCarousel(props) {
-    const { images, maxHeight, ...otherProps } = props;
+    const { images, ...otherProps } = props;
+
+    if (!images) {
+        return null;
+    }
 
     const hasMultipleImages = images.length > 1;
 
@@ -89,9 +99,9 @@ export default function ImageCarousel(props) {
             }
             {...otherProps}
         >
-            {images.map(image => (
-                <ImageWrapper key={image} maxHeight={maxHeight}>
-                    <Image src={image} alt={'product'} />
+            {images.map((image) => (
+                <ImageWrapper key={image}>
+                    <Image src={image} alt={'product'} layout={'fill'} />
                 </ImageWrapper>
             ))}
         </Carousel>
@@ -100,5 +110,4 @@ export default function ImageCarousel(props) {
 
 ImageCarousel.propTypes = {
     images: PropTypes.arrayOf(PropTypes.string).isRequired,
-    maxHeight: PropTypes.number.isRequired,
 };

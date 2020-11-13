@@ -138,7 +138,8 @@ export default function UpperNavBar() {
                     <Grid item xs={6} component={TabsWrapper}>
                         <Tabs
                             value={
-                                navigationItems.find((i) => i.url === pathname) ? pathname : false
+                                navigationItems.find(({ url }) => pathname.startsWith(url))?.url ??
+                                false
                             }
                             onChange={handleTabChange}
                             indicatorColor={'primary'}
@@ -149,9 +150,7 @@ export default function UpperNavBar() {
                                 <Link key={url} href={url}>
                                     <Tab
                                         label={
-                                            <LinkTabLabel>
-                                                {t(`pageNames.${i18nKey}`)}
-                                            </LinkTabLabel>
+                                            <LinkTabLabel>{t(`pageNames.${i18nKey}`)}</LinkTabLabel>
                                         }
                                         icon={
                                             <LinkTabIcon>

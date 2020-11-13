@@ -5,7 +5,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
-import http from '../../utils/HttpClient';
+import http from '../../utils/http';
 import { getFunctionUrl } from '../../utils/Firebase';
 
 export default function ProductsManagementTable() {

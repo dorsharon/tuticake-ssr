@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { getBreakpointAndDown, getBreakpointAndUp } from '../../utils/ThemeSelectors';
-import { useQuery } from 'react-query';
-import { CAKES } from '../../utils/query';
+import { QueryCache, useQuery } from 'react-query';
+import { CAKES, PRODUCTS } from '../../utils/query';
 import { Grid } from '@material-ui/core';
 import CakesEntry from './CakesEntry';
+import { dehydrate } from 'react-query/hydration';
 
 const ProductsListWrapper = styled.div`
     margin-block-start: 20px;
@@ -19,7 +20,7 @@ const ProductsListWrapper = styled.div`
 `;
 
 export default function Cakes() {
-    const { data: cakes, isLoading } = useQuery(CAKES);
+    const { data: cakes, isLoading } = useQuery([PRODUCTS, { productType: 'cake' }]);
 
     return (
         <ProductsListWrapper>
@@ -30,7 +31,7 @@ export default function Cakes() {
                               <CakesEntry />
                           </Grid>
                       ))
-                    : cakes?.map(cake => (
+                    : cakes?.map((cake) => (
                           <Grid item key={cake.id} xs={12} sm={6} md={4}>
                               <CakesEntry cake={cake} />
                           </Grid>

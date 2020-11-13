@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import ProductsManagementTable from './ProductsManagementTable';
-import http from '../../utils/HttpClient';
+import http from '../../utils/http';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { AUTHORIZE_ADMIN_ACCESS, getFunctionUrl } from '../../utils/Firebase';

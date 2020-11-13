@@ -2,9 +2,9 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import LandingPage from '../landing-page';
 import AdminDashboard from '../admin/AdminDashboard';
-import Cakes from '../cakes/Cakes';
+import Index from '../cakes';
 import CakeProductDetails from '../cakes/CakeProductDetails';
-import CupDesserts from '../cup-desserts/CupDesserts';
+import CupDesserts from '../cup-desserts';
 import BoxSets from '../box-sets/BoxSets';
 
 export default function Router() {
@@ -19,7 +19,7 @@ export default function Router() {
             </Route>
 
             <Route exact path={'/products/cakes'}>
-                <Cakes />
+                <Index />
             </Route>
 
             <Route exact path={'/products/cakes/:productId'}>
