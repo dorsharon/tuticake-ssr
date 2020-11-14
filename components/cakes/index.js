@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { getBreakpointAndDown, getBreakpointAndUp } from '../../utils/ThemeSelectors';
-import { QueryCache, useQuery } from 'react-query';
-import { CAKES, PRODUCTS } from '../../utils/query';
+import { useQuery } from 'react-query';
 import { Grid } from '@material-ui/core';
 import CakesEntry from './CakesEntry';
-import { dehydrate } from 'react-query/hydration';
+import { PRODUCTS } from '../../constants/queryKeys';
 
 const ProductsListWrapper = styled.div`
     margin-block-start: 20px;

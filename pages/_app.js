@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import UpperNavBar from '../components/layout/header/UpperNavBar';
 import Footer from '../components/layout/footer';
 import BottomNavBar from '../components/layout/header/BottomNavBar';
@@ -16,7 +16,7 @@ import { QueryCache, ReactQueryCacheProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query-devtools';
 import { useRouter } from 'next/router';
 import { lightThemeLtr, lightThemeRtl } from '../utils/theme';
-import { I18nProvider } from 'next-localization';
+import { I18n, I18nProvider } from 'next-localization';
 import HE from '../locales/he.json';
 import EN from '../locales/en.json';
 import { Hydrate } from 'react-query/hydration';

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { List, ListItem, ListItemText, Tooltip as MuiTooltip } from '@material-ui/core';
-import { GoGlobe as GlobeIcon } from 'react-icons/go';
-import { FaWhatsapp as WhatsappIcon } from 'react-icons/fa';
-import styled from 'styled-components';
+import { FaWhatsapp } from 'react-icons/fa';
+import { VscGlobe } from 'react-icons/vsc';
+import styled, { css } from 'styled-components';
 import {
     getBreakpointAndDown,
     getBreakpointAndUp,
@@ -19,6 +19,18 @@ const languages = [
     { locale: 'he', name: 'עברית' },
     { locale: 'en', name: 'English' },
 ];
+
+const commonIconStyles = css`
+    fill: ${getCommonColor('black')};
+`;
+
+const WhatsappIcon = styled(FaWhatsapp)`
+    ${commonIconStyles}
+`;
+
+const GlobeIcon = styled(VscGlobe)`
+    ${commonIconStyles}
+`;
 
 const Tooltip = styled(MuiTooltip)`
     background-color: ${getCommonColor('white')};

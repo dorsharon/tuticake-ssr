@@ -12,12 +12,10 @@ import {
 import { Skeleton } from '@material-ui/lab';
 import { Button } from '@material-ui/core';
 import CupDessertsOrderForm from './CupDessertsOrderForm';
-import {
-    CUP_DESSERTS,
-    CUP_DESSERTS_BOX_SETS,
-    CUP_DESSERTS_EXAMPLE_IMAGES,
-} from '../../utils/query';
 import { useI18n } from 'next-localization';
+import { CUP_DESSERTS_EXAMPLE_IMAGES, PRODUCTS } from '../../constants/queryKeys';
+import { CUP_DESSERT, CUP_DESSERTS_BOX_SET } from '../../constants/productTypes';
+import NextImage from 'next/image';
 
 const CupDessertsWrapper = styled.div`
     display: grid;
@@ -25,16 +23,36 @@ const CupDessertsWrapper = styled.div`
     grid-template-columns: repeat(2, calc(50% - 25px));
     column-gap: 50px;
 
+    & > :first-child {
+        order: 1;
+    }
+
+    & > :last-child {
+        order: 0;
+    }
+
     ${getBreakpointAndUp('md')} {
-        max-width: 80%;
+        width: 80%;
     }
 
     ${getBreakpointAndDown('sm')} {
-        max-width: 85%;
+        width: 85%;
     }
 
     ${getBreakpointAndDown('xs')} {
-        max-width: 95%;
+        width: 95%;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(2, auto);
+
+        & > :first-child {
+            order: 1;
+            margin-block-start: 40px;
+            margin-block-end: 40px;
+        }
+
+        & > :last-child {
+            order: 0;
+        }
     }
 `;
 
@@ -56,12 +74,16 @@ const StartOrderButton = styled(Button)`
     margin-block-end: 20px;
 `;
 
+const Image = styled(NextImage)`
+    object-fit: fill;
+`;
+
 const ExampleImagesWrapper = styled.div`
     display: grid;
 
     ${getBreakpointAndUp('sm')} {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 300px);
+        grid-template-rows: repeat(2, 300px);
     }
 
     ${getBreakpointAndDown('xs')} {
@@ -106,8 +128,8 @@ export default function CupDesserts() {
 
     const prefetchData = useCallback(async () => {
         await Promise.all([
-            cache.prefetchQuery(CUP_DESSERTS_BOX_SETS),
-            cache.prefetchQuery(CUP_DESSERTS),
+            cache.prefetchQuery([PRODUCTS, { productType: CUP_DESSERTS_BOX_SET }]),
+            cache.prefetchQuery([PRODUCTS, { productType: CUP_DESSERT }]),
         ]);
     }, [cache]);
 
@@ -118,7 +140,7 @@ export default function CupDesserts() {
     return (
         <CupDessertsWrapper>
             <ExampleImagesWrapper>
-                {isLoading
+                {!exampleImages || isLoading
                     ? Array.from({ length: 4 }, (_, index) => (
                           <Skeleton
                               key={`cup-dessert-image-skeleton-${index}`}
@@ -128,7 +150,13 @@ export default function CupDesserts() {
                           />
                       ))
                     : exampleImages?.map((url, index) => (
-                          <ExampleImage key={url} alt={`example-image-${index}`} src={url} />
+                          <Image
+                              key={url}
+                              alt={`example-image-${index}`}
+                              src={url}
+                              height={240}
+                              width={300}
+                          />
                       ))}
             </ExampleImagesWrapper>
 

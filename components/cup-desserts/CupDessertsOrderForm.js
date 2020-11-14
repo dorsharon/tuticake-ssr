@@ -11,21 +11,20 @@ import {
     getGradient,
     getPrimaryColor,
 } from '../../utils/ThemeSelectors';
-import { I18n, Translate } from 'react-redux-i18n';
 import Grid from '@material-ui/core/Grid';
 import { AnimatePresence, motion } from 'framer-motion';
-import { CUP_DESSERTS, CUP_DESSERTS_BOX_SETS } from '../../utils/query';
 import { Skeleton } from '@material-ui/lab';
 import { FiMinus as MinusIcon, FiPlus as PlusIcon } from 'react-icons/fi';
 import { useImmer } from 'use-immer';
 import OrderFormCustomerDetails from '../common/OrderFormCustomerDetails';
-import { sendNewOrder } from '../../utils/Email';
-import Order from '../../utils/orders/Order';
-import CupDessertsBoxSetOrderItem from '../../utils/orders/CupDessertsBoxSetOrderItem';
+import { sendNewOrder } from '../../utils/emailUtils';
 import OrderSentDialog from '../common/OrderSentDialog';
-import { useSelector } from 'react-redux';
-import { selectI18nLocale } from '../../redux/i18n/i18nSelectors';
 import { DateTime } from 'luxon';
+import { useI18n } from 'next-localization';
+import { useRouter } from 'next/router';
+import { CUP_DESSERT, CUP_DESSERTS_BOX_SET } from '../../constants/productTypes';
+import { PRODUCTS } from '../../constants/queryKeys';
+import Image from 'next/image';
 
 const customFlavorId = '5fc6ff34-2315-480a-b436-d01e9dcc89c5';
 
@@ -162,6 +161,11 @@ const CustomFlavorNotice = styled(Typography)`
 `;
 
 export default function CupDessertsOrderForm() {
+    const { t } = useI18n();
+
+    const router = useRouter();
+    const { locale } = router;
+
     const [{ formStep, step1Values, step2Values }, setFormState] = useImmer({
         formStep: 1,
         step1Values: null,
@@ -169,19 +173,20 @@ export default function CupDessertsOrderForm() {
     });
     const [isOrderSentDialogOpen, setIsOrderSentDialogOpen] = useState(false);
 
-    const { data: boxSets, isLoading: isLoadingBoxSets, isError: isErrorInBoxSets } = useQuery(
-        CUP_DESSERTS_BOX_SETS,
-    );
+    const { data: boxSets, isLoading: isLoadingBoxSets, isError: isErrorInBoxSets } = useQuery([
+        PRODUCTS,
+        { productType: CUP_DESSERTS_BOX_SET },
+    ]);
 
     const {
         data: cupDesserts,
         isLoading: isLoadingCupDesserts,
         isError: isErrorInCupDesserts,
-    } = useQuery(CUP_DESSERTS);
+    } = useQuery([PRODUCTS, { productType: CUP_DESSERT }]);
 
     const formMethods = useForm({
         defaultValues: {
-            boxSetQuantity: 0,
+            boxSet: { quantity: 0, price: 0 },
             flavors: cupDesserts?.reduce((result, { id }) => ({ ...result, [id]: 0 }), {}) ?? {},
         },
     });
@@ -197,62 +202,62 @@ export default function CupDessertsOrderForm() {
         0,
     );
 
-    const locale = useSelector(selectI18nLocale);
-
     const handleBack = () => {
-        setFormState(state => {
+        setFormState((state) => {
             state.formStep = Math.max(state.formStep - 1, 1);
         });
     };
 
-    const submitForm = async values => {
+    const submitForm = async (values) => {
         if (formStep === 1) {
-            setFormState(state => {
+            setFormState((state) => {
                 state.step1Values = values;
                 state.formStep = 2;
             });
         } else if (formStep === 2) {
-            setFormState(state => {
+            setFormState((state) => {
                 state.step2Values = values;
                 state.formStep = 3;
             });
         } else {
             setIsOrderSentDialogOpen(true);
 
-            await sendNewOrder(
-                new Order(
-                    { fullName: values.fullName, phoneNumber: values.phoneNumber },
+            await sendNewOrder({
+                customer: { fullName: values.fullName, phoneNumber: values.phoneNumber },
+                delivery: {
+                    method: values.deliveryMethod,
+                    dateTime: DateTime.fromFormat(
+                        values.deliveryDateTime,
+                        'dd/MM/yyyy, hh:mm',
+                    ).toISO(),
+                    city: values.deliveryCity,
+                    address: values.deliveryAddress,
+                },
+                products: [
                     {
-                        method: values.deliveryMethod,
-                        dateTime: DateTime.fromFormat(values.deliveryDateTime, 'dd/MM/yyyy, hh:mm'),
-                        city: values.deliveryCity,
-                        address: values.deliveryAddress,
+                        type: CUP_DESSERTS_BOX_SET,
+                        quantity: step1Values?.boxSet?.quantity,
+                        flavors: Object.entries(step2Values?.flavors)
+                            .filter(([_, quantity]) => quantity > 0)
+                            .map(([id, quantity]) => ({
+                                name: cupDesserts?.find((cd) => cd.id === id)?.nameHe,
+                                quantity,
+                            })),
+                        price: step1Values?.boxSet?.price,
                     },
-                    [
-                        new CupDessertsBoxSetOrderItem(
-                            step1Values?.boxSetQuantity,
-                            Object.entries(step2Values?.flavors)
-                                .filter(([_, quantity]) => quantity > 0)
-                                .map(([id, quantity]) => ({
-                                    name: cupDesserts?.find(cd => cd.id === id)?.nameHe,
-                                    quantity,
-                                })),
-                        ),
-                    ],
-                    values.orderNotes,
-                ),
-            );
+                ],
+                orderNotes: values.orderNotes,
+                totalPrice: step1Values?.boxSet?.price,
+            });
         }
     };
 
     const renderStep1 = () => (
         <Grid container direction={'column'} alignItems={'center'}>
-            <Typography variant={'h5'}>
-                <Translate value={'cupDesserts.pickQuantity'} />
-            </Typography>
+            <Typography variant={'h5'}>{t('cupDesserts.pickQuantity')}</Typography>
 
             <Controller
-                name={'boxSetQuantity'}
+                name={'boxSet'}
                 control={control}
                 defaultValue={null}
                 render={({ onChange }) => (
@@ -276,13 +281,13 @@ export default function CupDessertsOrderForm() {
                                       <QuantityOption
                                           key={quantity}
                                           type={'submit'}
-                                          onClick={() => onChange(quantity)}
+                                          onClick={() => onChange({ quantity, price })}
                                       >
                                           <Typography variant={'h2'}>{quantity}</Typography>
                                       </QuantityOption>
 
                                       <Typography variant={'h5'}>
-                                          {price} {I18n.t('products.shekels')}
+                                          {price} {t('products.shekels')}
                                       </Typography>
                                   </Grid>
                               ))}
@@ -294,9 +299,7 @@ export default function CupDessertsOrderForm() {
 
     const renderStep2 = () => (
         <Grid container direction={'column'} alignItems={'center'}>
-            <Typography variant={'h5'}>
-                <Translate value={'cupDesserts.pickflavors'} />
-            </Typography>
+            <Typography variant={'h5'}>{t('cupDesserts.pickflavors')}</Typography>
 
             <Controller
                 name={'flavors'}
@@ -322,7 +325,14 @@ export default function CupDessertsOrderForm() {
                                   )
                                   .map(({ id, images, nameHe, nameEn }) => (
                                       <FlavorOption key={id}>
-                                          <FlavorImage alt={'cup-dessert'} src={images[0]} />
+                                          <div>
+                                              <Image
+                                                  alt={'cup-dessert'}
+                                                  src={images[0]}
+                                                  width={100}
+                                                  height={135}
+                                              />
+                                          </div>
 
                                           <FlavorName variant={'h6'} align={'center'}>
                                               {locale === 'he' ? nameHe : nameEn}
@@ -355,11 +365,11 @@ export default function CupDessertsOrderForm() {
                                                   classes={{ disabled: 'tc-disabled' }}
                                                   disabled={
                                                       totalFlavorsCount >=
-                                                      step1Values?.boxSetQuantity
+                                                      step1Values?.boxSet?.quantity
                                                   }
                                                   onClick={() =>
                                                       totalFlavorsCount <
-                                                          step1Values?.boxSetQuantity &&
+                                                          step1Values?.boxSet?.quantity &&
                                                       onChange({
                                                           ...flavors,
                                                           [id]: (flavors?.[id] ?? 0) + 1,
@@ -377,15 +387,15 @@ export default function CupDessertsOrderForm() {
 
             <Grid container justify={'space-between'}>
                 <BackButton variant={'outlined'} onClick={handleBack}>
-                    {I18n.t('common.back')}
+                    {t('common.back')}
                 </BackButton>
 
                 <Button
                     classes={{ disabled: 'tc-disabled' }}
-                    disabled={totalFlavorsCount !== step1Values?.boxSetQuantity}
+                    disabled={totalFlavorsCount !== step1Values?.boxSet?.quantity}
                     type={'submit'}
                 >
-                    {I18n.t('common.next')}
+                    {t('common.next')}
                 </Button>
             </Grid>
         </Grid>
@@ -397,10 +407,10 @@ export default function CupDessertsOrderForm() {
 
             <Grid container justify={'space-between'}>
                 <BackButton variant={'outlined'} onClick={handleBack}>
-                    {I18n.t('common.back')}
+                    {t('common.back')}
                 </BackButton>
 
-                <Button type={'submit'}>{I18n.t('order.purchase')}</Button>
+                <Button type={'submit'}>{t('order.purchase')}</Button>
             </Grid>
         </>
     );
@@ -444,9 +454,7 @@ export default function CupDessertsOrderForm() {
 
             <OrderSentDialog isOpen={isOrderSentDialogOpen} isProcessing={isSubmitting}>
                 {!isSubmitting && step2Values?.flavors?.[customFlavorId] > 0 && (
-                    <CustomFlavorNotice>
-                        <Translate value={'cupDesserts.customFlavorNotice'} />
-                    </CustomFlavorNotice>
+                    <CustomFlavorNotice>{t('cupDesserts.customFlavorNotice')}</CustomFlavorNotice>
                 )}
             </OrderSentDialog>
         </>

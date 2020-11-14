@@ -1,23 +1,16 @@
-// import { fetchAllProducts } from '../api/productsApi';
-// import { fetchCupDessertsExampleImageUrls, fetchProfileImageUrl } from '../api/imagesApi';
 import http from './http';
-
-export const PRODUCTS = 'products';
-export const PRODUCT = 'product';
-export const CAKES = 'cakes';
-export const CUP_DESSERTS_BOX_SETS = 'cupDessertsBoxSets';
-export const CUP_DESSERTS = 'cupDesserts';
-export const CUP_DESSERTS_EXAMPLE_IMAGES = 'cupDessertsExampleImages';
-export const PROFILE_IMAGE = 'profileImage';
+import {
+    CUP_DESSERTS_EXAMPLE_IMAGES,
+    PRODUCT,
+    PRODUCTS,
+    PROFILE_IMAGE,
+} from '../constants/queryKeys';
 
 const keyFns = {
-    [CAKES]: async () => await http.get(`/api/products`, { productType: 'cake' }),
     [PRODUCTS]: async ({ productType } = {}) => await http.get(`/api/products`, { productType }),
     [PRODUCT]: async (id) => await http.get(`/api/products/${id}`),
-    // [CUP_DESSERTS_BOX_SETS]: async () => await fetchAllProducts('cupDessertsBoxSet'),
-    // [CUP_DESSERTS]: async () => await fetchAllProducts('cupDessert'),
-    // [CUP_DESSERTS_EXAMPLE_IMAGES]: fetchCupDessertsExampleImageUrls,
-    // [PROFILE_IMAGE]: fetchProfileImageUrl,
+    [CUP_DESSERTS_EXAMPLE_IMAGES]: async () => await http.get(`/api/images/cup-desserts-examples`),
+    [PROFILE_IMAGE]: async () => await http.get(`/api/images/profile`),
 };
 
 export const defaultQueryFn = async (key, ...args) => {

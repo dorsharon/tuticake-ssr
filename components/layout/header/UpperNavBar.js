@@ -14,11 +14,6 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useI18n } from 'next-localization';
 
-const a11yProps = (index) => ({
-    id: `nav-tab-${index}`,
-    'aria-controls': `nav-tabpanel-${index}`,
-});
-
 const LinkTabIcon = styled(SvgIcon)`
     &&& {
         margin-bottom: 0;
@@ -127,6 +122,8 @@ export default function UpperNavBar() {
         router.push(newValue);
     };
 
+    console.log('TAB', navigationItems.find(({ url }) => pathname.startsWith(url))?.url ?? false);
+
     return (
         <NavBar isShrinked={isScrolled} isBordered={isScrolled}>
             <Grid container component={NavBarControlsWrapper}>
@@ -147,7 +144,7 @@ export default function UpperNavBar() {
                             centered
                         >
                             {navigationItems.map(({ name, i18nKey, icon: Icon, url }, index) => (
-                                <Link key={url} href={url}>
+                                <Link key={url} href={url} value={url}>
                                     <Tab
                                         label={
                                             <LinkTabLabel>{t(`pageNames.${i18nKey}`)}</LinkTabLabel>
@@ -159,7 +156,7 @@ export default function UpperNavBar() {
                                         }
                                         to={url}
                                         value={url}
-                                        {...a11yProps(index)}
+                                        aria-controls={`nav-tabpanel-${index}`}
                                     />
                                 </Link>
                             ))}

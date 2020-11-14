@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { getCommonColor, getPrimaryColor } from '../../utils/ThemeSelectors';
-import { ReactComponent as LogoCupcakeSvg } from '../../public/logo-cupcake.svg';
+import LogoCupcakeSvg from '../../public/logo-cupcake.svg';
 
 const DividerLine = styled.div`
     content: '';

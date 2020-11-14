@@ -17,6 +17,9 @@ const lightThemeCommonProps = {
         background: {
             default: '#ffffff',
         },
+        common: {
+            black: '#333333',
+        },
     },
     overrides: {
         MuiTooltip: {
@@ -25,10 +28,9 @@ const lightThemeCommonProps = {
                 color: '#ffffff',
                 background: `linear-gradient(180deg, ${primaryColor}, ${secondaryColor})`,
             },
-            arrow:{
+            arrow: {
                 color: primaryColor,
-
-            }
+            },
         },
     },
 };

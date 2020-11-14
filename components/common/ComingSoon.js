@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { IoIosConstruct } from 'react-icons/io';
 import { Grid, Typography } from '@material-ui/core';
-import { I18n } from 'react-redux-i18n';
 import { getBreakpointAndDown, getPrimaryColor } from '../../utils/ThemeSelectors';
+import { useI18n } from 'next-localization';
 
 const ComingSoonWrapper = styled.div`
     ${getBreakpointAndDown('sm')} {
@@ -25,6 +25,8 @@ const Message = styled(Typography).attrs(() => ({
 `;
 
 export default function ComingSoon() {
+    const { t } = useI18n();
+
     return (
         <Grid
             component={ComingSoonWrapper}
@@ -38,9 +40,9 @@ export default function ComingSoon() {
             </Grid>
 
             <Grid item>
-                <Message>{I18n.t('comingSoon.construction')}</Message>
-                <Message>{I18n.t('comingSoon.socialMedia')}</Message>
-                <Message>{I18n.t('comingSoon.whenItComes')}</Message>
+                <Message>{t('comingSoon.construction')}</Message>
+                <Message>{t('comingSoon.socialMedia')}</Message>
+                <Message>{t('comingSoon.whenItComes')}</Message>
             </Grid>
         </Grid>
     );

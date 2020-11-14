@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { ReactComponent as CupcakeSvg } from '../../public/logo-cupcake.svg';
+import CupcakeSvg from '../../public/logo-cupcake.svg';
 import { getSecondaryColor } from '../../utils/ThemeSelectors';
 
 const bounceAnimation = keyframes`
@@ -41,7 +41,7 @@ const PreloaderWrapper = styled.div`
     align-items: center;
 `;
 
-export default function Preloader(props) {
+export default function Preloader() {
     return (
         <PreloaderWrapper>
             <Cupcake />

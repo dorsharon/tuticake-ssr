@@ -1,14 +1,13 @@
 import React from 'react';
 import CakeProductDetails from '../../../components/cakes/CakeProductDetails';
 import { QueryCache } from 'react-query';
-import { PRODUCT } from '../../../utils/query';
 import { dehydrate } from 'react-query/hydration';
-import { connectToDatabase } from '../../../utils/mongoDb';
+import { getAllProducts } from '../../../db/productsDb';
+import { CAKE } from '../../../constants/productTypes';
+import { PRODUCT } from '../../../constants/queryKeys';
 
 export async function getStaticPaths() {
-    const { db } = await connectToDatabase();
-
-    const products = await db.collection('products').find({ type: 'cake' }).toArray();
+    const products = await getAllProducts(CAKE);
 
     return {
         paths: products.map(({ id }) => ({ params: { id } })),

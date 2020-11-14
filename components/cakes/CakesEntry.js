@@ -104,10 +104,10 @@ export default function CakesEntry(props) {
                         <ProductPrice variant={'subtitle1'}>
                             <Skeleton width={100} />
                         </ProductPrice>
-
-                        <Skeleton variant={'rect'} height={50} width={130} />
                     </Grid>
                 </CardContent>
+
+                <Skeleton variant={'rect'} height={50} width={'100%'} />
             </Card>
         );
     }
@@ -135,7 +135,7 @@ export default function CakesEntry(props) {
                 )}
             </ChipsWrapper>
 
-            <ImageCarousel images={images.png} />
+            <ImageCarousel images={images} />
 
             <CardContent>
                 <ProductTitle>{name}</ProductTitle>

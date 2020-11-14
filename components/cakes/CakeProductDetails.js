@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Grid, Typography, Divider as MuiDivider } from '@material-ui/core';
-import ImageCarousel from '../products/ImageCarousel';
 import {
     getPrimaryColor,
     getBreakpointAndDown,
@@ -9,9 +8,9 @@ import {
 } from '../../utils/ThemeSelectors';
 import CakeFormOrder from './CakeOrderForm';
 import { useRouter } from 'next/router';
-import { QueryCache, useQuery } from 'react-query';
-import { PRODUCT, PRODUCTS } from '../../utils/query';
-import { dehydrate } from 'react-query/hydration';
+import { useQuery } from 'react-query';
+import { PRODUCT } from '../../constants/queryKeys';
+import ImageCarousel from '../common/ImageCarousel';
 
 const CakeProductDetailsWrapper = styled.div`
     ${getBreakpointAndUp('md')} {
@@ -66,7 +65,7 @@ export default function CakeProductDetails({ id }) {
             <Grid item sm={12} md={6}>
                 <ProductInfoWrapper>
                     <>
-                        <ImageCarousel images={images.webp} maxHeight={400} />
+                        <ImageCarousel images={images} maxHeight={400} />
 
                         <Divider />
 

@@ -1,33 +1,19 @@
-import { connectToDatabase } from '../../../utils/mongoDb';
 import { v2 as cloudinary } from 'cloudinary';
+import { getAllProducts } from '../../../db/productsDb';
 
 export default async (req, res) => {
     const { productType } = req.query;
 
-    const { db } = await connectToDatabase();
-
-    const products = await db.collection('products').find({ type: productType }).toArray();
+    const products = await getAllProducts(productType);
 
     const { resources: images } = await cloudinary.search
         .expression(`folder:product-images/${productType}/*`)
         .execute();
 
     const result = products.reduce(
-        (res, product) => ({
+        (res, { _id, ...product }) => ({
             ...res,
-            [product.id]: {
-                descriptionEn: product.descriptionEn,
-                descriptionHe: product.descriptionHe,
-                id: product.id,
-                isAvailable: product.isAvailable,
-                isDairy: product.isDairy,
-                isGlutenFree: product.isGlutenFree,
-                nameEn: product.nameEn,
-                nameHe: product.nameHe,
-                price: product.price,
-                type: product.type,
-                images: {},
-            },
+            [product.id]: { ...product, images: [] },
         }),
         {},
     );
@@ -37,12 +23,8 @@ export default async (req, res) => {
         const splitFolder = folder.split('/');
         const productId = splitFolder[splitFolder.length - 1];
 
-        if (result[productId]) {
-            if (result[productId].images[format]) {
-                result[productId].images[format].push(secure_url);
-            } else {
-                result[productId].images[format] = [secure_url];
-            }
+        if (format === 'webp') {
+            result[productId].images.push(secure_url);
         }
     }
 

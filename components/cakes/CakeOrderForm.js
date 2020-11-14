@@ -109,13 +109,13 @@ export default function CakeFormOrder({ product }) {
                 state.formStep = 2;
             });
         } else {
-            setIsOrderSentDialogOpen(true);
+            // setIsOrderSentDialogOpen(true);
 
-            const result = await http.post(`/orders`, {
+            const result = await http.post(`/api/orders`, {
                 customer: { fullName: values.fullName, phoneNumber: values.phoneNumber },
                 delivery: {
                     method: values.deliveryMethod,
-                    dateTime: DateTime.fromFormat(values.deliveryDateTime, 'dd/MM/yyyy, hh:mm'),
+                    dateTime: DateTime.fromFormat(values.deliveryDateTime, 'dd/MM/yyyy, hh:mm').toISO(),
                     city: values.deliveryCity,
                     address: values.deliveryAddress,
                 },
@@ -134,6 +134,8 @@ export default function CakeFormOrder({ product }) {
                 orderNotes: values.orderNotes,
                 totalPrice,
             });
+
+            console.log(result)
         }
     };
 
