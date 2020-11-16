@@ -50,7 +50,7 @@ export const getOrderHTMLString = (order) => `
         ``,
     )}
     
-    <h1>מחיר סופי:${order.totalPrice}</h1>
+    <h1>מחיר סופי: ${order.totalPrice} ${i18n.t('products.shekels')}</h1>
 `;
 
 export const getProductHTMLString = (product) => {
@@ -82,7 +82,7 @@ export const getCakeHTMLString = (cake) => `
 `;
 
 export const getCupDessertsBoxSetHTMLString = (boxSet) => `
-    <h2>מארז ${boxSet.quantity} קינוחי כוסות</h2>
+    <h2>מארז ${boxSet.quantity} קינוחי כוסות (${boxSet.price} ${i18n.t('products.shekels')})</h2>
     <h4>מחיר: ${boxSet.price}</h4>
     
     ${boxSet.flavors.reduce(
