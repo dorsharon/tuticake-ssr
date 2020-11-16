@@ -80,20 +80,6 @@ export default function CakeProductDetails({ id }) {
             </ProductInfoWrapper>
 
             <CakeFormOrder product={product} />
-
-            {/*<SwipeableDrawer*/}
-            {/*    open={state[anchor]}*/}
-            {/*    onClose={toggleDrawer(anchor, false)}*/}
-            {/*    onOpen={toggleDrawer(anchor, true)}*/}
-            {/*>*/}
-            {/*    <ProductInfoWrapper>*/}
-            {/*        <ImageCarousel images={images} />*/}
-
-            {/*        <ProductName>{name}</ProductName>*/}
-
-            {/*        <ProductDescription>{description}</ProductDescription>*/}
-            {/*    </ProductInfoWrapper>{' '}*/}
-            {/*</SwipeableDrawer>*/}
         </CakeProductDetailsWrapper>
     );
 }
