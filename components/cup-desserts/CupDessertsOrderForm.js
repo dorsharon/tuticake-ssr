@@ -17,7 +17,6 @@ import { Skeleton } from '@material-ui/lab';
 import { FiMinus as MinusIcon, FiPlus as PlusIcon } from 'react-icons/fi';
 import { useImmer } from 'use-immer';
 import OrderFormCustomerDetails from '../common/OrderFormCustomerDetails';
-import { sendNewOrder } from '../../utils/emailUtils';
 import OrderSentDialog from '../common/OrderSentDialog';
 import { DateTime } from 'luxon';
 import { useI18n } from 'next-localization';
@@ -25,6 +24,7 @@ import { useRouter } from 'next/router';
 import { CUP_DESSERT, CUP_DESSERTS_BOX_SET } from '../../constants/productTypes';
 import { PRODUCTS } from '../../constants/queryKeys';
 import Image from 'next/image';
+import http from '../../utils/http';
 
 const customFlavorId = '5fc6ff34-2315-480a-b436-d01e9dcc89c5';
 
@@ -222,7 +222,7 @@ export default function CupDessertsOrderForm() {
         } else {
             setIsOrderSentDialogOpen(true);
 
-            await sendNewOrder({
+            await http.post(`/api/orders`, {
                 customer: { fullName: values.fullName, phoneNumber: values.phoneNumber },
                 delivery: {
                     method: values.deliveryMethod,

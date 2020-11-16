@@ -48,11 +48,11 @@ const ArrowButton = styled(IconButton)`
     transform: translateY(-50%);
     z-index: 1;
 
-    :first-child {
+    &.prev-button {
         left: 0;
     }
 
-    :nth-child(2) {
+    &.next-button {
         right: 0;
     }
 `;
@@ -85,14 +85,14 @@ export default function ImageCarousel(props) {
             showThumbs={false}
             renderArrowPrev={(onClick, hasPrev) =>
                 hasPrev && (
-                    <ArrowButton onClick={onClick}>
+                    <ArrowButton className={'prev-button'} onClick={onClick}>
                         <PrevIcon />
                     </ArrowButton>
                 )
             }
             renderArrowNext={(onClick, hasNext) =>
                 hasNext && (
-                    <ArrowButton onClick={onClick}>
+                    <ArrowButton className={'next-button'} onClick={onClick}>
                         <NextIcon />
                     </ArrowButton>
                 )

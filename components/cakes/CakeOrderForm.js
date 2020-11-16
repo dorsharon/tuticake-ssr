@@ -39,6 +39,10 @@ const TextField = styled(MuiTextField).attrs(() => ({
     }
 `;
 
+const Form = styled.form`
+    width: 100%;
+`;
+
 const BackButton = styled(MuiButton)`
     padding: 12px;
     font-size: 1.5rem;
@@ -109,13 +113,16 @@ export default function CakeFormOrder({ product }) {
                 state.formStep = 2;
             });
         } else {
-            // setIsOrderSentDialogOpen(true);
+            setIsOrderSentDialogOpen(true);
 
-            const result = await http.post(`/api/orders`, {
+            await http.post(`/api/orders`, {
                 customer: { fullName: values.fullName, phoneNumber: values.phoneNumber },
                 delivery: {
                     method: values.deliveryMethod,
-                    dateTime: DateTime.fromFormat(values.deliveryDateTime, 'dd/MM/yyyy, hh:mm').toISO(),
+                    dateTime: DateTime.fromFormat(
+                        values.deliveryDateTime,
+                        'dd/MM/yyyy, hh:mm',
+                    ).toISO(),
                     city: values.deliveryCity,
                     address: values.deliveryAddress,
                 },
@@ -134,8 +141,6 @@ export default function CakeFormOrder({ product }) {
                 orderNotes: values.orderNotes,
                 totalPrice,
             });
-
-            console.log(result)
         }
     };
 
@@ -202,7 +207,7 @@ export default function CakeFormOrder({ product }) {
     return (
         <>
             <FormProvider {...formMethods}>
-                <form onSubmit={handleSubmit(submitForm)}>
+                <Form onSubmit={handleSubmit(submitForm)}>
                     <AnimatePresence initial={false} exitBeforeEnter>
                         <Grid
                             container
@@ -216,7 +221,7 @@ export default function CakeFormOrder({ product }) {
                             {renderStep()}
                         </Grid>
                     </AnimatePresence>
-                </form>
+                </Form>
             </FormProvider>
 
             <OrderSentDialog isOpen={isOrderSentDialogOpen} isProcessing={isSubmitting} />

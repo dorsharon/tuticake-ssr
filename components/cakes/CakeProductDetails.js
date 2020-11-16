@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Grid, Typography, Divider as MuiDivider } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import {
     getPrimaryColor,
     getBreakpointAndDown,
     getBreakpointAndUp,
+    getCommonColor,
 } from '../../utils/ThemeSelectors';
 import CakeFormOrder from './CakeOrderForm';
 import { useRouter } from 'next/router';
@@ -13,8 +14,13 @@ import { PRODUCT } from '../../constants/queryKeys';
 import ImageCarousel from '../common/ImageCarousel';
 
 const CakeProductDetailsWrapper = styled.div`
+    display: grid;
+    place-items: center;
+
     ${getBreakpointAndUp('md')} {
         max-width: 70%;
+        grid-template-columns: repeat(2, calc(50% - 25px));
+        column-gap: 50px;
     }
 
     ${getBreakpointAndDown('sm')} {
@@ -22,27 +28,30 @@ const CakeProductDetailsWrapper = styled.div`
     }
 
     ${getBreakpointAndDown('xs')} {
-        max-width: 95%;
+        max-width: 90%;
+        grid-template-rows: auto auto;
+        row-gap: 50px;
     }
 `;
 
 const ProductInfoWrapper = styled.div`
-    position: sticky;
-    top: 5rem;
+    display: grid;
+    grid-template-rows: 400px 1fr;
+    row-gap: 20px;
+
+    ${getBreakpointAndUp('sm')} {
+        position: sticky;
+        top: 5rem;
+    }
 `;
 
 const ProductName = styled(Typography).attrs(() => ({ variant: 'h4' }))`
     text-align: center;
     color: ${getPrimaryColor()};
-    margin-block-end: 10px;
 `;
 
-const ProductDescription = styled(Typography).attrs(() => ({ variant: 'h6' }))``;
-
-const Divider = styled(MuiDivider)`
-    margin-block-start: 10px;
-    margin-block-end: 10px;
-    background-color: ${getPrimaryColor()};
+const ProductDescription = styled(Typography).attrs(() => ({ variant: 'h6' }))`
+    color: ${getCommonColor('black')};
 `;
 
 export default function CakeProductDetails({ id }) {
@@ -61,24 +70,30 @@ export default function CakeProductDetails({ id }) {
     }
 
     return (
-        <Grid container component={CakeProductDetailsWrapper} alignItems={'center'} spacing={6}>
-            <Grid item sm={12} md={6}>
-                <ProductInfoWrapper>
-                    <>
-                        <ImageCarousel images={images} maxHeight={400} />
+        <CakeProductDetailsWrapper>
+            <ProductInfoWrapper>
+                <ImageCarousel images={images} />
 
-                        <Divider />
+                <ProductName>{name}</ProductName>
 
-                        <ProductName>{name}</ProductName>
+                <ProductDescription>{description}</ProductDescription>
+            </ProductInfoWrapper>
 
-                        <ProductDescription>{description}</ProductDescription>
-                    </>
-                </ProductInfoWrapper>
-            </Grid>
+            <CakeFormOrder product={product} />
 
-            <Grid item sm={12} md={6}>
-                <CakeFormOrder product={product} />
-            </Grid>
-        </Grid>
+            {/*<SwipeableDrawer*/}
+            {/*    open={state[anchor]}*/}
+            {/*    onClose={toggleDrawer(anchor, false)}*/}
+            {/*    onOpen={toggleDrawer(anchor, true)}*/}
+            {/*>*/}
+            {/*    <ProductInfoWrapper>*/}
+            {/*        <ImageCarousel images={images} />*/}
+
+            {/*        <ProductName>{name}</ProductName>*/}
+
+            {/*        <ProductDescription>{description}</ProductDescription>*/}
+            {/*    </ProductInfoWrapper>{' '}*/}
+            {/*</SwipeableDrawer>*/}
+        </CakeProductDetailsWrapper>
     );
 }

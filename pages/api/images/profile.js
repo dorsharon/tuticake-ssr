@@ -2,15 +2,8 @@ import { v2 as cloudinary } from 'cloudinary';
 
 export default async (req, res) => {
     const { resources: images } = await cloudinary.search
-        .expression(`folder:website-assets/profile/*`)
+        .expression(`folder:website-assets/profile/* AND format:webp`)
         .execute();
 
-    const result = [];
-
-    for (const { format, secure_url } of images) {
-        if (format === 'webp') {
-            result.push(secure_url);
-        }
-    }
-    res.status(200).send(result[0]);
+    res.status(200).send(images.length > 0 ? images[0].secure_url : null);
 };

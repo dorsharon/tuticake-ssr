@@ -1,23 +1,22 @@
-import email from 'emailjs-com';
-import settings from './settings';
+import gmailSend from 'gmail-send';
 import { DateTime } from 'luxon';
 import { CAKE, CUP_DESSERTS_BOX_SET } from '../constants/productTypes';
 import i18n from './i18n';
 
-const { emailJsServiceId, emailJsNewOrderTemplateId, emailJsUserId } = settings;
-
-email.init(emailJsUserId);
+const send = gmailSend({
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+    to: ['reutnimni26@gmail.com', 'dor442@gmail.com'],
+    from: 'תותיקייק',
+});
 
 export const sendNewOrder = async (order) => {
-    await email.send(
-        emailJsServiceId,
-        emailJsNewOrderTemplateId,
-        {
-            fullName: order.customer.fullName,
-            message: getOrderHTMLString(order),
-        },
-        emailJsUserId,
-    );
+    i18n.locale('he');
+
+    await send({
+        subject: `התקבלה הזמנה חדשה מאת ${order.customer.fullName}`,
+        html: getOrderHTMLString(order),
+    });
 };
 
 export const getOrderHTMLString = (order) => `
@@ -36,7 +35,11 @@ export const getOrderHTMLString = (order) => `
             : ''
     }
     
-    <h2>הערות להזמנה: ${order.notes}</h2>
+    ${
+        order.notes && order.notes.trim() !== ''
+            ? `<h2>הערות להזמנה: ${order.notes.trim()}</h2>`
+            : ''
+    }
     
     <h1>פרטי ההזמנה:</h1>
     ${order.products.reduce(
@@ -46,6 +49,8 @@ export const getOrderHTMLString = (order) => `
     `,
         ``,
     )}
+    
+    <h1>מחיר סופי:${order.totalPrice}</h1>
 `;
 
 export const getProductHTMLString = (product) => {
@@ -67,6 +72,8 @@ export const getCakeHTMLString = (cake) => `
         ${result}
         <b>${i18n.t(`cakes.questions.${key}.question`)}</b><br/>
         <div>${value.trim() ? value : '--'}</div>
+        
+        <h6>מחיר: ${cake.price}</h6>
     `,
         '',
     )}
@@ -75,7 +82,8 @@ export const getCakeHTMLString = (cake) => `
 `;
 
 export const getCupDessertsBoxSetHTMLString = (boxSet) => `
-    <h2>מארז ${boxSet.boxSetQuantity} קינוחי כוסות</h2>
+    <h2>מארז ${boxSet.quantity} קינוחי כוסות</h2>
+    <h4>מחיר: ${boxSet.price}</h4>
     
     ${boxSet.flavors.reduce(
         (result, { name, quantity }) => `

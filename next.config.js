@@ -7,7 +7,11 @@ module.exports = {
 
         return config;
     },
-    i18n: { locales: ['he', 'en'], defaultLocale: 'he' },
+    i18n: {
+        locales: ['he', 'en'],
+        defaultLocale: 'he', // The default locale to fall back to
+        localeDetection: false, // Disable automatic locale detection on `/`
+    },
     images: {
         domains: ['res.cloudinary.com'],
     },

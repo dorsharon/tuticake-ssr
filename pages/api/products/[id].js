@@ -7,7 +7,7 @@ export default async (req, res) => {
     const product = await getProduct(id);
 
     const { resources: images } = await cloudinary.search
-        .expression(`folder:product-images/*/${id}/*`)
+        .expression(`folder:product-images/cake/${id}/* AND format:webp`)
         .execute();
 
     const result = {
@@ -21,16 +21,8 @@ export default async (req, res) => {
         nameHe: product.nameHe,
         price: product.price,
         type: product.type,
-        images: [],
+        images: images.map((i) => i.secure_url),
     };
-
-    for (const image of images) {
-        const { format, secure_url } = image;
-
-        if (format === 'webp') {
-            result.images.push(secure_url);
-        }
-    }
 
     res.status(200).send(result);
 };

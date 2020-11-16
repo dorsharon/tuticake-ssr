@@ -7,7 +7,7 @@ export default async (req, res) => {
     const products = await getAllProducts(productType);
 
     const { resources: images } = await cloudinary.search
-        .expression(`folder:product-images/${productType}/*`)
+        .expression(`folder:product-images/${productType}/* AND format:webp`)
         .execute();
 
     const result = products.reduce(
@@ -18,14 +18,11 @@ export default async (req, res) => {
         {},
     );
 
-    for (const image of images) {
-        const { folder, format, secure_url } = image;
+    for (const { folder, secure_url } of images) {
         const splitFolder = folder.split('/');
         const productId = splitFolder[splitFolder.length - 1];
 
-        if (format === 'webp') {
-            result[productId].images.push(secure_url);
-        }
+        result[productId].images.push(secure_url);
     }
 
     res.status(200).send(Object.values(result));
