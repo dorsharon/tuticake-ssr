@@ -6,7 +6,7 @@ export default async (req, res) => {
 
         try {
             await sendNewOrder({ customer, delivery, products, orderNotes, totalPrice });
-            res.status(200).send();
+            res.status(200).send({});
         } catch (e) {
             res.status(500).send(e.message);
         }
