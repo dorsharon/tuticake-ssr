@@ -107,11 +107,6 @@ const FlavorsPickerWrapper = styled.div`
     }
 `;
 
-const FlavorImage = styled.img`
-    max-width: 100px;
-    max-height: 135px;
-`;
-
 const QuantityButton = styled(IconButton)`
     & svg {
         color: ${getPrimaryColor()};
@@ -254,7 +249,9 @@ export default function CupDessertsOrderForm() {
 
     const renderStep1 = () => (
         <Grid container direction={'column'} alignItems={'center'}>
-            <Typography variant={'h5'}>{t('cupDesserts.pickQuantity')}</Typography>
+            <Typography variant={'h5'} align={'center'}>
+                {t('cupDesserts.pickQuantity')}
+            </Typography>
 
             <Controller
                 name={'boxSet'}
@@ -299,7 +296,9 @@ export default function CupDessertsOrderForm() {
 
     const renderStep2 = () => (
         <Grid container direction={'column'} alignItems={'center'}>
-            <Typography variant={'h5'}>{t('cupDesserts.pickflavors')}</Typography>
+            <Typography variant={'h5'} align={'center'}>
+                {t('cupDesserts.pickflavors')}
+            </Typography>
 
             <Controller
                 name={'flavors'}

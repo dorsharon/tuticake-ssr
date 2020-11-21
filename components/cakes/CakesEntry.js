@@ -27,6 +27,7 @@ const PurchaseButton = styled(Button)`
     font-size: 1.2rem;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
+    padding: 12px 16px;
 `;
 
 const ProductTitle = styled(Typography).attrs(() => ({

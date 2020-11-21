@@ -15,25 +15,22 @@ import CupDessertsOrderForm from './CupDessertsOrderForm';
 import { useI18n } from 'next-localization';
 import { CUP_DESSERTS_EXAMPLE_IMAGES, PRODUCTS } from '../../constants/queryKeys';
 import { CUP_DESSERT, CUP_DESSERTS_BOX_SET } from '../../constants/productTypes';
-import NextImage from 'next/image';
+import Image from 'next/image';
 import ImageCarousel from '../common/ImageCarousel';
 
 const CupDessertsWrapper = styled.div`
     display: grid;
     place-items: center;
+    width: 90%;
 
     ${getBreakpointAndUp('md')} {
         grid-template-columns: repeat(2, calc(50% - 25px));
         column-gap: 50px;
     }
 
-    ${getBreakpointAndDown('md')} {
-        width: 85%;
-    }
-
     ${getBreakpointAndDown('sm')} {
-        width: 90%;
         grid-template-rows: repeat(2, auto);
+        row-gap: 50px;
     }
 `;
 
@@ -55,10 +52,6 @@ const StartOrderButton = styled(Button)`
     margin-block-end: 20px;
 `;
 
-const Image = styled(NextImage)`
-    object-fit: fill;
-`;
-
 const ExampleImagesWrapper = styled.div`
     display: grid;
 
@@ -66,13 +59,11 @@ const ExampleImagesWrapper = styled.div`
         grid-template-columns: repeat(2, 250px);
         grid-template-rows: repeat(2, 250px);
 
-        img {
+        & > div {
             filter: drop-shadow(2px 4px 6px black);
             transform: rotate(20deg);
 
             &:nth-child(1) {
-                border: 10px solid white;
-                filter: drop-shadow(2px 4px 6px black);
                 transform: rotate(20deg);
             }
 
@@ -100,10 +91,6 @@ const ExampleImagesWrapper = styled.div`
         width: 100%;
         margin-block-start: 40px;
     }
-`;
-
-const ExampleImage = styled.img`
-    max-width: 300px;
 `;
 
 export default function CupDesserts() {
@@ -139,7 +126,7 @@ export default function CupDesserts() {
                             <Skeleton
                                 key={`cup-dessert-image-skeleton-${index}`}
                                 variant={'rect'}
-                                height={240}
+                                height={300}
                                 width={300}
                             />
                         ))
@@ -147,15 +134,18 @@ export default function CupDesserts() {
                 ) : isInBreakpointSm ? (
                     <ImageCarousel images={exampleImages} />
                 ) : (
-                    exampleImages?.map((url, index) => (
-                        <Image
-                            key={url}
-                            alt={`example-image-${index}`}
-                            src={url}
-                            height={240}
-                            width={300}
-                        />
-                    ))
+                    exampleImages
+                        ?.sort((i1, i2) => i1.localeCompare(i2))
+                        ?.map((url, index) => (
+                            <Image
+                                key={url}
+                                alt={`example-image-${index}`}
+                                src={url}
+                                height={300}
+                                width={300}
+                                objectFit={'contain'}
+                            />
+                        ))
                 )}
             </ExampleImagesWrapper>
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { TextField as MuiTextField } from '@material-ui/core';
+import InputMask from 'react-input-mask';
 import NumberFormat from 'react-number-format';
 import { Controller, useFormContext } from 'react-hook-form';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -81,21 +82,61 @@ export default function OrderFormCustomerDetails() {
 
             <Controller
                 name={'phoneNumber'}
+                label={t(`order.phoneNumber`)}
                 defaultValue={''}
                 rules={{
-                    required: t('form.required'),
-                    minLength: 10,
+                    minLength: {
+                        value: 10,
+                        message: 'min is 10',
+                    },
                 }}
-                render={({ onChange }) => (
-                    <NumberFormat
-                        {...textFieldProps('phoneNumber')}
-                        customInput={TextField}
-                        format="###-#######"
-                        allowLeadingZeros
-                        onValueChange={({ formattedValue }) => onChange(formattedValue)}
-                    />
-                )}
+                onChange={([{ formattedValue }]) => formattedValue}
+                as={NumberFormat}
+                format={'###-#######'}
+                allowLeadingZeros
+                customInput={TextField}
+                fullWidth
+                error={!!errors?.phoneNumber}
+                helperText={errors?.phoneNumber?.message}
             />
+
+            {/*<NumberFormat*/}
+            {/*    {...textFieldProps('phoneNumber')}*/}
+            {/*    customInput={({ value, ...otherProps }) => <TextField {...otherProps} />}*/}
+            {/*    format="###-#######"*/}
+            {/*    allowLeadingZeros*/}
+            {/*    // onValueChange={({ formattedValue }) => onChange(formattedValue)}*/}
+            {/*/>*/}
+
+            {/*<InputMask mask="999-9999999" disableUnderline>*/}
+            {/*    {(inputProps) => <TextField {...inputProps} {...textFieldProps('phoneNumber')} defaultValue={''}/>}*/}
+            {/*</InputMask>*/}
+
+            {/*<Controller*/}
+            {/*    // name={'phoneNumber'}*/}
+            {/*    defaultValue={''}*/}
+            {/*    // rules={{*/}
+            {/*    //     required: t('form.required'),*/}
+            {/*    //     minLength: 10,*/}
+            {/*    // }}*/}
+            {/*    as={NumberFormat}*/}
+            {/*    {...textFieldProps('phoneNumber')}*/}
+            {/*    customInput={TextField}*/}
+            {/*    format="###-#######"*/}
+            {/*    allowLeadingZeros*/}
+            {/*    // render={({ onChange, value }) => (*/}
+            {/*    //     <NumberFormat*/}
+            {/*    //         customInput={TextField}*/}
+            {/*    //         label={t(`order.${name}`)}*/}
+            {/*    //         format="###-#######"*/}
+            {/*    //         allowLeadingZeros*/}
+            {/*    //         onValueChange={({ formattedValue }) => onChange(formattedValue)}*/}
+            {/*    //         fullWidth*/}
+            {/*    //         error={!!errors?.[name]}*/}
+            {/*    //         helperText={errors?.[name]?.message}*/}
+            {/*    //     />*/}
+            {/*    // )}*/}
+            {/*/>*/}
 
             <Controller
                 name={'deliveryMethod'}

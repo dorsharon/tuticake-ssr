@@ -25,12 +25,12 @@ const CakeProductDetailsWrapper = styled.div`
 
     ${getBreakpointAndDown('sm')} {
         max-width: 85%;
+        grid-template-rows: auto auto;
+        row-gap: 50px;
     }
 
     ${getBreakpointAndDown('xs')} {
         max-width: 90%;
-        grid-template-rows: auto auto;
-        row-gap: 50px;
     }
 `;
 

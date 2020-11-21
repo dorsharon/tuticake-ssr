@@ -125,7 +125,7 @@
         },
         "startOrder": "Start order",
         "pickQuantity": "How many cup desserts would you like in your box?",
-        "pickflavors": "Which and how many of each flavour would you like?",
+        "pickflavors": "Which and how many of each flavor would you like?",
         "customFlavorNotice": "By the way, we noticed you wanted some custom flavors, we'll be sure to talk about it when we contact you."
     }
 }
