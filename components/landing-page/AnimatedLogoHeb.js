@@ -55,7 +55,7 @@ export default styled(Logo)`
     }
 
     ${getBreakpointAndDown('sm')} {
-        height: 140px;
+        height: 120px;
     }
 
     ${getBreakpointAndDown('xs')} {

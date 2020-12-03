@@ -22,7 +22,7 @@ const LandingPageWrapper = styled.div`
     display: grid;
     row-gap: 30px;
 
-    ${getBreakpointAndUp('lg')} {
+    ${getBreakpointAndUp('md')} {
         grid-template-rows: 350px 1fr;
     }
 
@@ -50,26 +50,26 @@ const LogoCupcake1 = styled(LogoCupcakeSvg)`
 
     ${getBreakpointAndUp('lg')} {
         height: 300px;
-        top: 70px;
+        top: 100px;
         left: 150px;
     }
 
     ${getBreakpointAndDown('md')} {
         height: 250px;
-        top: 100px;
-        left: 100px;
+        top: 150px;
+        left: 80px;
     }
 
     ${getBreakpointAndDown('sm')} {
         height: 220px;
-        top: 110px;
-        left: 80px;
+        top: 80px;
+        left: 50px;
     }
 
     ${getBreakpointAndDown('xs')} {
         height: 150px;
-        top: 60px;
-        left: 15px;
+        top: 100px;
+        left: 20px;
     }
 `;
 
@@ -81,26 +81,26 @@ const LogoCupcake2 = styled(LogoCupcakeSvg)`
 
     ${getBreakpointAndUp('lg')} {
         height: 200px;
-        top: 10px;
+        top: 80px;
         right: 250px;
     }
 
     ${getBreakpointAndDown('md')} {
-        height: 200px;
-        top: 10px;
-        right: 140px;
+        height: 180px;
+        top: 80px;
+        right: 80px;
     }
 
     ${getBreakpointAndDown('sm')} {
         height: 160px;
-        top: 30px;
+        top: 50px;
         right: 60px;
     }
 
     ${getBreakpointAndDown('xs')} {
         height: 100px;
-        top: 40px;
-        right: 20px;
+        top: 50px;
+        right: 5px;
     }
 `;
 
@@ -120,7 +120,6 @@ const IntroductionWrapper = styled.div`
 
     ${getBreakpointAndDown('md')} {
         width: 85%;
-        flex-direction: column;
     }
 
     ${getBreakpointAndDown('sm')} {
