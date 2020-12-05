@@ -27,7 +27,9 @@
         "back": "Back"
     },
     "form": {
-        "required": "This field is required"
+        "required": "This field is required",
+        "invalidPhoneNumber": "Please provide a valid phone number",
+        "invalidEmail": "Please provide a valid e-mail address"
     },
     "areas": {
         "global": "Global",
@@ -70,6 +72,10 @@
         "fullName": "Full Name",
         "phoneNumber": "Phone Number",
         "orderNotes": "Notes",
+        "email": "Email",
+        "isBusinessCustomer": "Business customer?",
+        "companyName": "Company Name",
+        "companyNumber": "Company Number (Het Pey)",
         "orderProcessing": {
             "justAMoment": "Just a moment...",
             "processing": "We are processing your order."

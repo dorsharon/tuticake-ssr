@@ -27,7 +27,9 @@
         "back": "חזור"
     },
     "form": {
-        "required": "יש למלא שדה זה"
+        "required": "יש למלא שדה זה",
+        "invalidPhoneNumber": "אנא מלאו מס׳ טלפון תקין",
+        "invalidEmail": "אנא מלאו כתובת אימייל תקינה"
     },
     "areas": {
         "global": "כל הארץ",
@@ -70,6 +72,10 @@
         "fullName": "שם מלא",
         "phoneNumber": "מס' טלפון",
         "orderNotes": "הערות להזמנה",
+        "email": "אימייל",
+        "isBusinessCustomer": "לקוח עסקי?",
+        "companyName": "שם החברה",
+        "companyNumber": "מספר עוסק / ח.פ.",
         "orderProcessing": {
             "justAMoment": "רק רגע...",
             "processing": "אנו מעבדים את הזמנתך."

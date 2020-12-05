@@ -1,26 +1,21 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import {
-    getBackgroundColor,
     getBreakpointAndDown,
     getBreakpointAndUp,
     getCommonColor,
     getGradient,
 } from '../../utils/ThemeSelectors';
-import AnimatedLogoHeb from './AnimatedLogoHeb';
-import AnimatedLogoEng from './AnimatedLogoEng';
 import LogoCupcakeSvg from '../../public/logo-cupcake.svg';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
-import Skeleton from '@material-ui/lab/Skeleton';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { Container } from '@material-ui/core';
+import LogoHebSvg from '../../public/logo-heb.svg';
+import LogoEngSvg from '../../public/logo-eng.svg';
 
 const LandingPageWrapper = styled.div`
     display: grid;
     row-gap: 30px;
+    margin-block-end: 40px;
 
     ${getBreakpointAndUp('md')} {
         grid-template-rows: 350px 1fr;
@@ -33,6 +28,31 @@ const LandingPageWrapper = styled.div`
     ${getBreakpointAndDown('xs')} {
         grid-template-rows: 200px 1fr;
     }
+`;
+
+const logoCommonStyles = css`
+    ${getBreakpointAndUp('md')} {
+        height: 140px;
+    }
+
+    ${getBreakpointAndDown('sm')} {
+        height: 120px;
+    }
+
+    ${getBreakpointAndDown('xs')} {
+        height: 90px;
+    }
+
+    fill: ${getCommonColor('white')};
+    margin-block-start: 30px;
+`;
+
+const LogoHeb = styled(LogoHebSvg)`
+    ${logoCommonStyles}
+`;
+
+const LogoEng = styled(LogoEngSvg)`
+    ${logoCommonStyles}
 `;
 
 const HeaderSection = styled.div`
@@ -105,10 +125,9 @@ const LogoCupcake2 = styled(LogoCupcakeSvg)`
 `;
 
 const IntroductionWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    place-self: center;
     align-items: center;
-    justify-self: center;
 
     & > *:not(:last-child) {
         margin-inline-end: 20px;
@@ -116,15 +135,19 @@ const IntroductionWrapper = styled.div`
 
     ${getBreakpointAndUp('lg')} {
         width: 70%;
+        grid-template-columns: 240px 1fr;
+        grid-template-rows: 295px;
+        column-gap: 40px;
     }
 
     ${getBreakpointAndDown('md')} {
         width: 85%;
+        place-items: center;
     }
 
     ${getBreakpointAndDown('sm')} {
         width: 90%;
-        flex-direction: column;
+        place-items: center;
     }
 `;
 
@@ -177,20 +200,22 @@ const Parallax = styled.g`
     }
 `;
 
-const ProfileImage = styled(Image)`
+const ProfileImageWrapper = styled.div`
     border: 10px solid ${getCommonColor('white')};
     filter: drop-shadow(2px 4px 6px black);
+    box-sizing: border-box;
+    height: 100%;
 `;
 
 export default function LandingPage() {
     const { locale } = useRouter();
 
-    const AnimatedLogo = locale === 'he' ? AnimatedLogoHeb : AnimatedLogoEng;
+    const Logo = locale === 'he' ? LogoHeb : LogoEng;
 
     return (
         <LandingPageWrapper>
             <HeaderSection>
-                <AnimatedLogo />
+                <Logo />
 
                 <LogoCupcake1 />
                 <LogoCupcake2 />
@@ -213,7 +238,14 @@ export default function LandingPage() {
             </HeaderSection>
 
             <IntroductionWrapper>
-                <ProfileImage alt={'profile'} src={'/profile.jpeg'} height={220.5} width={160} />
+                <ProfileImageWrapper>
+                    <Image
+                        alt={'profile'}
+                        src={'/profile.jpeg'}
+                        layout={'fill'}
+                        objectFit={'contain'}
+                    />
+                </ProfileImageWrapper>
 
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor

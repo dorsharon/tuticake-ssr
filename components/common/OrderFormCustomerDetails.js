@@ -1,6 +1,5 @@
 import React from 'react';
-import { TextField as MuiTextField } from '@material-ui/core';
-import InputMask from 'react-input-mask';
+import { TextField as MuiTextField, FormControlLabel, Checkbox } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 import { Controller, useFormContext } from 'react-hook-form';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -13,9 +12,13 @@ import { useI18n } from 'next-localization';
 const FormWrapper = styled.div`
     align-self: center;
     display: grid;
-    grid-template-rows: repeat(${(props) => (props.$deliveryMode ? '4' : '3')}, 50px);
+    grid-template-rows: repeat(
+        ${(props) => 3 + (props.$isDelivery ? 1 : 0) + (props.$isBusinessCustomer ? 1 : 0)},
+        50px
+    );
     grid-template-columns: repeat(2, 200px);
     column-gap: 35px;
+    row-gap: 5px;
 
     & .orderNotes {
         grid-column: 1 / span 2;
@@ -45,6 +48,16 @@ const TextField = styled(MuiTextField).attrs(() => ({
     }
 `;
 
+const CheckboxWrapper = styled(FormControlLabel)`
+    &.tc-checkbox-wrapper {
+        margin: 0;
+
+        .tc-checkbox {
+            padding: 9px 0 9px 9px;
+        }
+    }
+`;
+
 const deliveryCitiesKeys = [
     'telAviv',
     'ramatGan',
@@ -63,7 +76,7 @@ export default function OrderFormCustomerDetails() {
 
     const { register, watch, control, errors } = useFormContext();
 
-    const deliveryMethod = watch('deliveryMethod');
+    const { deliveryMethod, isBusinessCustomer } = watch(['deliveryMethod', 'isBusinessCustomer']);
 
     const textFieldProps = (name) => ({
         className: name,
@@ -76,7 +89,10 @@ export default function OrderFormCustomerDetails() {
     });
 
     return (
-        <FormWrapper $deliveryMode={deliveryMethod === 'delivery'}>
+        <FormWrapper
+            $isDelivery={deliveryMethod === 'delivery'}
+            $isBusinessCustomer={!!isBusinessCustomer}
+        >
             <DevTool control={control} />
             <TextField {...textFieldProps('fullName')} />
 
@@ -85,10 +101,9 @@ export default function OrderFormCustomerDetails() {
                 label={t(`order.phoneNumber`)}
                 defaultValue={''}
                 rules={{
-                    minLength: {
-                        value: 10,
-                        message: 'min is 10',
-                    },
+                    required: t('form.required'),
+                    validate: (value) =>
+                        (value && value.trim().length >= 11) || t('form.invalidPhoneNumber'),
                 }}
                 onChange={([{ formattedValue }]) => formattedValue}
                 as={NumberFormat}
@@ -98,45 +113,40 @@ export default function OrderFormCustomerDetails() {
                 fullWidth
                 error={!!errors?.phoneNumber}
                 helperText={errors?.phoneNumber?.message}
+                onFocus={() => {}} // Fix no ref being on the text field to call focus()
             />
 
-            {/*<NumberFormat*/}
-            {/*    {...textFieldProps('phoneNumber')}*/}
-            {/*    customInput={({ value, ...otherProps }) => <TextField {...otherProps} />}*/}
-            {/*    format="###-#######"*/}
-            {/*    allowLeadingZeros*/}
-            {/*    // onValueChange={({ formattedValue }) => onChange(formattedValue)}*/}
-            {/*/>*/}
+            <TextField
+                {...textFieldProps('email')}
+                inputRef={register({
+                    required: t('form.required'),
+                    pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: t('form.invalidEmail'),
+                    },
+                })}
+            />
 
-            {/*<InputMask mask="999-9999999" disableUnderline>*/}
-            {/*    {(inputProps) => <TextField {...inputProps} {...textFieldProps('phoneNumber')} defaultValue={''}/>}*/}
-            {/*</InputMask>*/}
+            <CheckboxWrapper
+                classes={{ root: 'tc-checkbox-wrapper' }}
+                label={t('order.isBusinessCustomer')}
+                control={
+                    <Checkbox
+                        classes={{ root: 'tc-checkbox' }}
+                        inputRef={register}
+                        name={'isBusinessCustomer'}
+                        defaultChecked={false}
+                    />
+                }
+            />
 
-            {/*<Controller*/}
-            {/*    // name={'phoneNumber'}*/}
-            {/*    defaultValue={''}*/}
-            {/*    // rules={{*/}
-            {/*    //     required: t('form.required'),*/}
-            {/*    //     minLength: 10,*/}
-            {/*    // }}*/}
-            {/*    as={NumberFormat}*/}
-            {/*    {...textFieldProps('phoneNumber')}*/}
-            {/*    customInput={TextField}*/}
-            {/*    format="###-#######"*/}
-            {/*    allowLeadingZeros*/}
-            {/*    // render={({ onChange, value }) => (*/}
-            {/*    //     <NumberFormat*/}
-            {/*    //         customInput={TextField}*/}
-            {/*    //         label={t(`order.${name}`)}*/}
-            {/*    //         format="###-#######"*/}
-            {/*    //         allowLeadingZeros*/}
-            {/*    //         onValueChange={({ formattedValue }) => onChange(formattedValue)}*/}
-            {/*    //         fullWidth*/}
-            {/*    //         error={!!errors?.[name]}*/}
-            {/*    //         helperText={errors?.[name]?.message}*/}
-            {/*    //     />*/}
-            {/*    // )}*/}
-            {/*/>*/}
+            {isBusinessCustomer && (
+                <>
+                    <TextField {...textFieldProps('companyName')} />
+
+                    <TextField {...textFieldProps('companyNumber')} />
+                </>
+            )}
 
             <Controller
                 name={'deliveryMethod'}

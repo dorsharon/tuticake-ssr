@@ -36,6 +36,15 @@ export const getOrderHTMLString = (order) => `
     }
     
     ${
+        order.customer.isBusinessCustomer
+            ? `
+                <div>שם החברה: ${order.customer.companyName.trim()}</div>
+                <div>מספר עוסק / ח.פ.: ${order.customer.companyNumber.trim()}</div>
+              `
+            : ''
+    }
+    
+    ${
         order.notes && order.notes.trim() !== ''
             ? `<h2>הערות להזמנה: ${order.notes.trim()}</h2>`
             : ''

@@ -116,7 +116,13 @@ export default function CakeFormOrder({ product }) {
             setIsOrderSentDialogOpen(true);
 
             await http.post(`/api/orders`, {
-                customer: { fullName: values.fullName, phoneNumber: values.phoneNumber },
+                customer: {
+                    fullName: values.fullName,
+                    phoneNumber: values.phoneNumber,
+                    isBusinessCustomer: values.isBusinessCustomer,
+                    companyName: values.companyName,
+                    companyNumber: values.companyNumber,
+                },
                 delivery: {
                     method: values.deliveryMethod,
                     dateTime: DateTime.fromFormat(
