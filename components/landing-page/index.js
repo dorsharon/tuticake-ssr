@@ -11,6 +11,10 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import LogoHebSvg from '../../public/logo-heb.svg';
 import LogoEngSvg from '../../public/logo-eng.svg';
+import Grid from '@material-ui/core/Grid';
+import { useQuery } from 'react-query';
+import { CUP_DESSERTS_EXAMPLE_IMAGES, PROFILE_IMAGE } from '../../constants/queryKeys';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const LandingPageWrapper = styled.div`
     display: grid;
@@ -125,19 +129,20 @@ const LogoCupcake2 = styled(LogoCupcakeSvg)`
 `;
 
 const IntroductionWrapper = styled.div`
-    display: grid;
-    place-self: center;
-    align-items: center;
-
-    & > *:not(:last-child) {
-        margin-inline-end: 20px;
-    }
+    //display: flex;
+    align-self: flex-start;
+    justify-self: center;
 
     ${getBreakpointAndUp('lg')} {
+        //flex-direction: row;
         width: 70%;
-        grid-template-columns: 240px 1fr;
-        grid-template-rows: 295px;
-        column-gap: 40px;
+        //grid-template-columns: 240px 1fr;
+        //grid-template-rows: 295px;
+        //column-gap: 40px;
+
+        & > *:not(:last-child) {
+            margin-inline-end: 20px;
+        }
     }
 
     ${getBreakpointAndDown('md')} {
@@ -212,6 +217,8 @@ export default function LandingPage() {
 
     const Logo = locale === 'he' ? LogoHeb : LogoEng;
 
+    const { data: imageUrl, isLoading } = useQuery(PROFILE_IMAGE);
+
     return (
         <LandingPageWrapper>
             <HeaderSection>
@@ -237,23 +244,35 @@ export default function LandingPage() {
                 </Waves>
             </HeaderSection>
 
-            <IntroductionWrapper>
-                <ProfileImageWrapper>
-                    <Image
-                        alt={'profile'}
-                        src={'/profile.jpeg'}
-                        layout={'fill'}
-                        objectFit={'contain'}
-                    />
-                </ProfileImageWrapper>
+            {/*<IntroductionWrapper>*/}
+            <Grid container component={IntroductionWrapper}>
+                <Grid item xs={12} sm={3}>
+                    <ProfileImageWrapper>
+                        {isLoading ? (
+                            <Skeleton height={220} width={160} />
+                        ) : (
+                            <Image
+                                alt={'profile'}
+                                src={imageUrl}
+                                height={220}
+                                width={160}
+                                // layout={'fill'}
+                                // objectFit={'contain'}
+                            />
+                        )}
+                    </ProfileImageWrapper>
+                </Grid>
 
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                    nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse
-                </p>
-            </IntroductionWrapper>
+                <Grid item xs={12} sm={9}>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    </p>
+                </Grid>
+            </Grid>
+            {/*</IntroductionWrapper>*/}
         </LandingPageWrapper>
     );
 }
