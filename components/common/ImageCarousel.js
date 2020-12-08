@@ -6,7 +6,7 @@ import { getBackgroundColor, getPrimaryColor } from '../../utils/ThemeSelectors'
 import { Carousel as ReactCarousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { IconButton } from '@material-ui/core';
-import NextImage from 'next/image';
+import Image from 'next/image';
 
 const Carousel = styled(ReactCarousel)`
     direction: initial;
@@ -64,10 +64,6 @@ const ImageWrapper = styled.div`
     height: 100%;
 `;
 
-const Image = styled(NextImage)`
-    object-fit: contain;
-`;
-
 export default function ImageCarousel(props) {
     const { images, ...otherProps } = props;
 
@@ -101,7 +97,7 @@ export default function ImageCarousel(props) {
         >
             {images.map((image) => (
                 <ImageWrapper key={image}>
-                    <Image src={image} alt={'product'} layout={'fill'} />
+                    <Image src={image} alt={'product'} layout={'fill'} objectFit={'contain'} />
                 </ImageWrapper>
             ))}
         </Carousel>

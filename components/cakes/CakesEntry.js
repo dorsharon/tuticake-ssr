@@ -1,7 +1,7 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Grid, Button, Typography, CardContent, Card } from '@material-ui/core';
+import { Grid, Button, Typography, CardContent as MuiCardContent, Card } from '@material-ui/core';
 import { useInView } from 'react-intersection-observer';
 import { getCommonColor, getFontFamily, getGradient } from '../../utils/ThemeSelectors';
 import { motion } from 'framer-motion';
@@ -21,6 +21,8 @@ const ImageCarousel = styled(Carousel)`
 `;
 
 const PurchaseButton = styled(Button)`
+    justify-self: flex-end;
+    align-self: flex-end;
     background: ${getGradient()};
     width: 100%;
     color: ${getCommonColor('white')};
@@ -57,6 +59,13 @@ const InfoChip = styled.div`
     color: ${getCommonColor('white')};
     padding: 3px 6px;
     font-family: ${getFontFamily()};
+`;
+
+const CardContent = styled(MuiCardContent)`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 `;
 
 const ChipsWrapper = styled.div`

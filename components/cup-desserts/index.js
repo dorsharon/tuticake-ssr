@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Grid, Typography, useMediaQuery } from '@material-ui/core';
 import { useQuery, useQueryCache } from 'react-query';
 import {
+    getBackgroundColor,
     getBreakpointAndDown,
     getBreakpointAndUp,
     getCommonColor,
@@ -30,7 +31,8 @@ const CupDessertsWrapper = styled.div`
 
     ${getBreakpointAndDown('sm')} {
         grid-template-rows: repeat(2, auto);
-        row-gap: 50px;
+        row-gap: 10px;
+        margin-block-end: 20px;
     }
 `;
 
@@ -50,6 +52,12 @@ const StartOrderButton = styled(Button)`
     width: 200px;
     margin-block-start: 20px;
     margin-block-end: 20px;
+`;
+
+const ImageWrapper = styled.div`
+    border: 10px solid ${getCommonColor('white')};
+    filter: drop-shadow(2px 4px 6px black);
+    box-sizing: border-box;
 `;
 
 const ExampleImagesWrapper = styled.div`
@@ -89,7 +97,6 @@ const ExampleImagesWrapper = styled.div`
     ${getBreakpointAndDown('sm')} {
         grid-template-rows: 250px;
         width: 100%;
-        margin-block-start: 40px;
     }
 `;
 
@@ -137,14 +144,14 @@ export default function CupDesserts() {
                     exampleImages
                         ?.sort((i1, i2) => i1.localeCompare(i2))
                         ?.map((url, index) => (
-                            <Image
-                                key={url}
-                                alt={`example-image-${index}`}
-                                src={url}
-                                height={300}
-                                width={300}
-                                objectFit={'contain'}
-                            />
+                            <ImageWrapper key={url}>
+                                <Image
+                                    alt={`example-image-${index}`}
+                                    src={url}
+                                    layout={'fill'}
+                                    objectFit={'cover'}
+                                />
+                            </ImageWrapper>
                         ))
                 )}
             </ExampleImagesWrapper>

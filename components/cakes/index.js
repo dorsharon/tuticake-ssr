@@ -8,13 +8,23 @@ import { PRODUCTS } from '../../constants/queryKeys';
 
 const ProductsListWrapper = styled.div`
     margin-block-start: 20px;
+    display: grid;
+    column-gap: 30px;
+    row-gap: 30px;
 
-    ${getBreakpointAndUp('lg')} {
+    ${getBreakpointAndUp('md')} {
         width: 70%;
+        grid-template-columns: 1fr 1fr 1fr;
     }
 
     ${getBreakpointAndDown('md')} {
         width: 90%;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    ${getBreakpointAndDown('xs')} {
+        width: 90%;
+        grid-template-columns: 1fr;
     }
 `;
 
@@ -23,19 +33,11 @@ export default function Cakes() {
 
     return (
         <ProductsListWrapper>
-            <Grid container justify={'center'} spacing={5}>
-                {!cakes || isLoading
-                    ? Array.from({ length: 3 }, (_, index) => (
-                          <Grid key={`cake-skeleton-${index}`} item xs={12} sm={6} md={4}>
-                              <CakesEntry />
-                          </Grid>
-                      ))
-                    : cakes?.map((cake) => (
-                          <Grid item key={cake.id} xs={12} sm={6} md={4}>
-                              <CakesEntry cake={cake} />
-                          </Grid>
-                      ))}
-            </Grid>
+            {!cakes || isLoading
+                ? Array.from({ length: 3 }, (_, index) => (
+                      <CakesEntry key={`cake-skeleton-${index}`} />
+                  ))
+                : cakes?.map((cake) => <CakesEntry key={cake.id} cake={cake} />)}
         </ProductsListWrapper>
     );
 }
