@@ -120,7 +120,7 @@ const LogoCupcake2 = styled(LogoCupcakeSvg)`
     ${getBreakpointAndDown('xs')} {
         height: 100px;
         top: 50px;
-        right: 5px;
+        right: 15px;
     }
 `;
 
