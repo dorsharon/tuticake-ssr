@@ -23,7 +23,7 @@
     "jss-rtl": "^0.3.0",
     "luxon": "^1.25.0",
     "mongodb": "^3.6.2",
-    "next": "^10.0.3",
+    "next": "^10.0.5",
     "next-localization": "^0.9.3",
     "prop-types": "^15.7.2",
     "query-string": "^6.13.7",

@@ -132,6 +132,7 @@ const IntroductionWrapper = styled.div`
     //display: flex;
     align-self: flex-start;
     justify-self: center;
+    align-items: center;
 
     ${getBreakpointAndUp('lg')} {
         //flex-direction: row;
@@ -139,10 +140,6 @@ const IntroductionWrapper = styled.div`
         //grid-template-columns: 240px 1fr;
         //grid-template-rows: 295px;
         //column-gap: 40px;
-
-        & > *:not(:last-child) {
-            margin-inline-end: 20px;
-        }
     }
 
     ${getBreakpointAndDown('md')} {
@@ -206,18 +203,20 @@ const Parallax = styled.g`
 `;
 
 const ProfileImageWrapper = styled.div`
-    border: 10px solid ${getCommonColor('white')};
-    filter: drop-shadow(2px 4px 6px black);
-    box-sizing: border-box;
-    height: 100%;
+    display: flex;
+    justify-content: center;
+
+    & > div {
+        border: 10px solid ${getCommonColor('white')};
+        filter: drop-shadow(2px 4px 6px black);
+        box-sizing: border-box;
+    }
 `;
 
 export default function LandingPage() {
     const { locale } = useRouter();
 
     const Logo = locale === 'he' ? LogoHeb : LogoEng;
-
-    const { data: imageUrl, isLoading } = useQuery(PROFILE_IMAGE);
 
     return (
         <LandingPageWrapper>
@@ -245,21 +244,17 @@ export default function LandingPage() {
             </HeaderSection>
 
             {/*<IntroductionWrapper>*/}
-            <Grid container component={IntroductionWrapper}>
+            <Grid container component={IntroductionWrapper} spacing={4}>
                 <Grid item xs={12} sm={3}>
                     <ProfileImageWrapper>
-                        {isLoading ? (
-                            <Skeleton height={220} width={160} />
-                        ) : (
-                            <Image
-                                alt={'profile'}
-                                src={imageUrl}
-                                height={220}
-                                width={160}
-                                // layout={'fill'}
-                                // objectFit={'contain'}
-                            />
-                        )}
+                        <Image
+                            alt={'profile'}
+                            src={'website-assets/profile/profile.webp'}
+                            height={352}
+                            width={256}
+                            // layout={'responsive'}
+                            objectFit={'contain'}
+                        />
                     </ProfileImageWrapper>
                 </Grid>
 

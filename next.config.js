@@ -13,6 +13,7 @@ module.exports = {
         localeDetection: false, // Disable automatic locale detection on `/`
     },
     images: {
-        domains: ['res.cloudinary.com'],
+        loader: 'cloudinary',
+        path: 'https://res.cloudinary.com/dwpv9gjkj',
     },
 };
