@@ -29,7 +29,7 @@ import http from '../../utils/http';
 const customFlavorId = '5fc6ff34-2315-480a-b436-d01e9dcc89c5';
 
 const Form = styled.form`
-    width: 100%;
+    width: 90%;
 `;
 
 const QuantityOption = styled.button`

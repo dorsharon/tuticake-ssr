@@ -17,22 +17,31 @@ import { useI18n } from 'next-localization';
 import { CUP_DESSERTS_EXAMPLE_IMAGES, PRODUCTS } from '../../constants/queryKeys';
 import { CUP_DESSERT, CUP_DESSERTS_BOX_SET } from '../../constants/productTypes';
 import Image from 'next/image';
-import ImageCarousel from '../common/ImageCarousel';
+import Carousel from '../common/ImageCarousel';
 
 const CupDessertsWrapper = styled.div`
     display: grid;
     place-items: center;
-    width: 90%;
+    width: 100%;
 
     ${getBreakpointAndUp('md')} {
-        grid-template-columns: repeat(2, calc(50% - 25px));
-        column-gap: 50px;
+        grid-template-columns: repeat(2, 50%);
     }
 
     ${getBreakpointAndDown('sm')} {
-        grid-template-rows: repeat(2, auto);
+        grid-template-rows: 385px auto;
         row-gap: 10px;
         margin-block-end: 20px;
+    }
+`;
+
+const IntroductionWrapper = styled.div`
+    ${getBreakpointAndUp('lg')} {
+        width: 60%;
+    }
+
+    ${getBreakpointAndDown('sm')} {
+        width: 90%;
     }
 `;
 
@@ -55,15 +64,37 @@ const StartOrderButton = styled(Button)`
 `;
 
 const ImageWrapper = styled.div`
-    border: 10px solid ${getCommonColor('white')};
-    filter: drop-shadow(2px 4px 6px black);
-    box-sizing: border-box;
+    & > div {
+        border: 10px solid ${getCommonColor('white')};
+        filter: drop-shadow(2px 4px 6px black);
+        box-sizing: border-box;
+    }
+`;
+
+const ImageCarousel = styled(Carousel)`
+    margin-block-start: 20px;
+
+    & .control-dots {
+        bottom: 25px;
+    }
+
+    & .prev-button,
+    .next-button {
+        top: calc(50% - 20px);
+        svg {
+            fill: ${getCommonColor('white')};
+        }
+    }
 `;
 
 const ExampleImagesWrapper = styled.div`
-    display: grid;
+    background: ${getGradient()};
+    height: 100%;
+    width: 100%;
 
     ${getBreakpointAndUp('md')} {
+        display: grid;
+        place-content: center;
         grid-template-columns: repeat(2, 250px);
         grid-template-rows: repeat(2, 250px);
 
@@ -90,13 +121,10 @@ const ExampleImagesWrapper = styled.div`
     }
 
     ${getBreakpointAndUp('lg')} {
+        display: grid;
+        place-content: center;
         grid-template-columns: repeat(2, 300px);
         grid-template-rows: repeat(2, 300px);
-    }
-
-    ${getBreakpointAndDown('sm')} {
-        grid-template-rows: 250px;
-        width: 100%;
     }
 `;
 
@@ -105,9 +133,11 @@ export default function CupDesserts() {
 
     const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
 
-    const cache = useQueryCache();
+    const exampleImageUrls = [1, 2, 3, 4].map(
+        (i) => `website-assets/cup-desserts-examples/example${i}.webp`,
+    );
 
-    const { data: exampleImages, isLoading } = useQuery(CUP_DESSERTS_EXAMPLE_IMAGES);
+    const cache = useQueryCache();
 
     const prefetchData = useCallback(async () => {
         await Promise.all([
@@ -125,42 +155,48 @@ export default function CupDesserts() {
     return (
         <CupDessertsWrapper>
             <ExampleImagesWrapper>
-                {!exampleImages || isLoading ? (
-                    isInBreakpointSm ? (
-                        <Skeleton variant={'rect'} height={240} width={300} />
-                    ) : (
-                        Array.from({ length: 4 }, (_, index) => (
-                            <Skeleton
-                                key={`cup-dessert-image-skeleton-${index}`}
-                                variant={'rect'}
-                                height={300}
-                                width={300}
-                            />
-                        ))
-                    )
-                ) : isInBreakpointSm ? (
-                    <ImageCarousel images={exampleImages} />
-                ) : (
-                    exampleImages
-                        ?.sort((i1, i2) => i1.localeCompare(i2))
-                        ?.map((url, index) => (
+                {isInBreakpointSm ? (
+                    <ImageCarousel>
+                        {exampleImageUrls?.map((url, index) => (
                             <ImageWrapper key={url}>
                                 <Image
                                     alt={`example-image-${index}`}
                                     src={url}
-                                    layout={'fill'}
+                                    width={300}
+                                    height={300}
+                                    // layout={'fill'}
                                     objectFit={'cover'}
                                 />
                             </ImageWrapper>
-                        ))
+                        ))}
+                    </ImageCarousel>
+                ) : (
+                    exampleImageUrls?.map((url, index) => (
+                        <ImageWrapper key={url}>
+                            <Image
+                                alt={`example-image-${index}`}
+                                src={url}
+                                width={300}
+                                height={300}
+                                // layout={'fill'}
+                                objectFit={'cover'}
+                            />
+                        </ImageWrapper>
+                    ))
                 )}
             </ExampleImagesWrapper>
 
             {isOrderFormOpen ? (
                 <CupDessertsOrderForm />
             ) : (
-                <Grid container direction={'column'} alignItems={'center'} justify={'center'}>
-                    {['1', '2', '3', '4', '5'].map((i) => (
+                <Grid
+                    container
+                    direction={'column'}
+                    alignItems={'center'}
+                    justify={'center'}
+                    component={IntroductionWrapper}
+                >
+                    {[1, 2, 3, 4, 5].map((i) => (
                         <Introduction key={i}>{t(`cupDesserts.introduction.${i}`)}</Introduction>
                     ))}
 
