@@ -18,11 +18,11 @@ export default async (req, res) => {
         {},
     );
 
-    for (const { folder, secure_url } of images) {
+    for (const { folder, public_id } of images) {
         const splitFolder = folder.split('/');
         const productId = splitFolder[splitFolder.length - 1];
 
-        result[productId].images.push(secure_url);
+        result[productId].images.push(public_id);
     }
 
     res.status(200).send(Object.values(result));

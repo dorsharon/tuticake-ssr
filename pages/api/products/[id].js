@@ -21,7 +21,7 @@ export default async (req, res) => {
         nameHe: product.nameHe,
         price: product.price,
         type: product.type,
-        images: images.map((i) => i.secure_url),
+        images: images.map((i) => i.public_id),
     };
 
     res.status(200).send(result);

@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { PRODUCT } from '../../constants/queryKeys';
 import ImageCarousel from '../common/ImageCarousel';
+import Image from 'next/image';
 
 const CakeProductDetailsWrapper = styled.div`
     display: grid;
@@ -72,7 +73,18 @@ export default function CakeProductDetails({ id }) {
     return (
         <CakeProductDetailsWrapper>
             <ProductInfoWrapper>
-                <ImageCarousel images={images} />
+                <ImageCarousel>
+                    {images.map((url, index) => (
+                        <Image
+                            key={`${id}-${index}`}
+                            alt={`product-${index}`}
+                            src={url}
+                            height={400}
+                            width={350}
+                            objectFit={'contain'}
+                        />
+                    ))}
+                </ImageCarousel>
 
                 <ProductName>{name}</ProductName>
 

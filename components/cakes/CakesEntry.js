@@ -9,6 +9,7 @@ import Carousel from '../common/ImageCarousel';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useRouter } from 'next/router';
 import { useI18n } from 'next-localization';
+import Image from 'next/image';
 
 const CakesEntryWrapper = styled(Card)`
     position: relative;
@@ -78,8 +79,17 @@ const ChipsWrapper = styled.div`
 export default function CakesEntry(props) {
     const { cake } = props;
 
-    const { nameHe, nameEn, descriptionHe, descriptionEn, price, isDairy, isGlutenFree, images } =
-        cake ?? {};
+    const {
+        id,
+        nameHe,
+        nameEn,
+        descriptionHe,
+        descriptionEn,
+        price,
+        isDairy,
+        isGlutenFree,
+        images,
+    } = cake ?? {};
 
     const router = useRouter();
     const { locale } = router;
@@ -145,7 +155,18 @@ export default function CakesEntry(props) {
                 )}
             </ChipsWrapper>
 
-            <ImageCarousel images={images} />
+            <ImageCarousel>
+                {images.map((url, index) => (
+                    <Image
+                        key={`${id}-${index}`}
+                        alt={`product-${index}`}
+                        src={url}
+                        height={200}
+                        width={200}
+                        objectFit={'contain'}
+                    />
+                ))}
+            </ImageCarousel>
 
             <CardContent>
                 <ProductTitle>{name}</ProductTitle>
