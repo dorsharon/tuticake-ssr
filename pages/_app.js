@@ -12,14 +12,14 @@ import rtl from 'jss-rtl';
 import { defaultQueryFn } from '../utils/query';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import LuxonUtils from '@date-io/luxon';
-import { QueryCache, ReactQueryCacheProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query-devtools';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Hydrate } from 'react-query/hydration';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { useRouter } from 'next/router';
 import { lightThemeLtr, lightThemeRtl } from '../utils/theme';
-import {  I18nProvider } from 'next-localization';
+import { I18nProvider } from 'next-localization';
 import HE from '../locales/he.json';
 import EN from '../locales/en.json';
-import { Hydrate } from 'react-query/hydration';
 
 const MainLayoutWrapper = styled.div`
     height: 100vh;
@@ -56,7 +56,7 @@ const GlobalStyles = createGlobalStyle`
     }
 `;
 
-const queryCache = new QueryCache({
+const queryClient = new QueryClient({
     defaultConfig: { queries: { staleTime: 1000 * 60 * 60, queryFn: defaultQueryFn } },
 });
 
@@ -94,7 +94,7 @@ function MyApp({ Component, pageProps }) {
                     <MuiThemeProvider theme={theme}>
                         <ScThemeProvider theme={theme}>
                             <MuiPickersUtilsProvider utils={LuxonUtils} locale={locale}>
-                                <ReactQueryCacheProvider queryCache={queryCache}>
+                                <QueryClientProvider client={queryClient}>
                                     <Hydrate state={pageProps.dehydratedState}>
                                         <GlobalStyles />
 
@@ -117,7 +117,7 @@ function MyApp({ Component, pageProps }) {
                                             panelProps={{ dir: 'ltr' }}
                                         />
                                     </Hydrate>
-                                </ReactQueryCacheProvider>
+                                </QueryClientProvider>
                             </MuiPickersUtilsProvider>
                         </ScThemeProvider>
                     </MuiThemeProvider>

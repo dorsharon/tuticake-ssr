@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Grid, Button, Typography, CardContent as MuiCardContent, Card } from '@material-ui/core';
+import {
+    Grid,
+    Button,
+    Typography,
+    CardContent as MuiCardContent,
+    Card,
+    Backdrop,
+} from '@material-ui/core';
 import { useInView } from 'react-intersection-observer';
 import { getCommonColor, getFontFamily, getGradient } from '../../utils/ThemeSelectors';
 import { motion } from 'framer-motion';
@@ -91,6 +98,8 @@ export default function CakesEntry(props) {
         images,
     } = cake ?? {};
 
+    const [imageShownInFullScreen, setImageShownInFullScreen] = useState(null);
+
     const router = useRouter();
     const { locale } = router;
 
@@ -133,56 +142,73 @@ export default function CakesEntry(props) {
     }
 
     return (
-        <CakesEntryWrapper
-            innerRef={ref}
-            component={motion.div}
-            variants={{
-                hidden: { y: -50, opacity: 0 },
-                visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
-            }}
-            initial={'hidden'}
-            animate={isInView ? 'visible' : 'hidden'}
-        >
-            <ChipsWrapper>
-                <InfoChip backgroundColor={isDairy ? '#119ebe' : '#d40000'}>
-                    {t(isDairy ? 'products.dairy' : 'products.parve')}
-                </InfoChip>
+        <>
+            <CakesEntryWrapper
+                innerRef={ref}
+                component={motion.div}
+                variants={{
+                    hidden: { y: -50, opacity: 0 },
+                    visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
+                }}
+                initial={'hidden'}
+                animate={isInView ? 'visible' : 'hidden'}
+            >
+                <ChipsWrapper>
+                    <InfoChip backgroundColor={isDairy ? '#119ebe' : '#d40000'}>
+                        {t(isDairy ? 'products.dairy' : 'products.parve')}
+                    </InfoChip>
 
-                {isGlutenFree && (
-                    <Grid item>
-                        <InfoChip backgroundColor={'#8da100'}>{t('products.glutenFree')}</InfoChip>
-                    </Grid>
-                )}
-            </ChipsWrapper>
+                    {isGlutenFree && (
+                        <Grid item>
+                            <InfoChip backgroundColor={'#8da100'}>
+                                {t('products.glutenFree')}
+                            </InfoChip>
+                        </Grid>
+                    )}
+                </ChipsWrapper>
 
-            <ImageCarousel>
-                {images.map((url, index) => (
+                <ImageCarousel>
+                    {images.map((url, index) => (
+                        <Image
+                            key={`${id}-${index}`}
+                            alt={`product-${index}`}
+                            src={url}
+                            height={200}
+                            width={200}
+                            objectFit={'contain'}
+                            onClick={() => setImageShownInFullScreen(url)}
+                        />
+                    ))}
+                </ImageCarousel>
+
+                <CardContent>
+                    <ProductTitle>{name}</ProductTitle>
+
+                    <ProductDescription>{description}</ProductDescription>
+
+                    <ProductPrice>{`${price} ${t('products.shekels')}`}</ProductPrice>
+                </CardContent>
+
+                <PurchaseButton
+                    variant="contained"
+                    onClick={() => router.push(`/products/cakes/${cake.id}`)}
+                >
+                    {t('products.purchase')}
+                </PurchaseButton>
+            </CakesEntryWrapper>
+
+            {imageShownInFullScreen && (
+                <Backdrop open={open} onClick={() => setImageShownInFullScreen(null)}>
                     <Image
-                        key={`${id}-${index}`}
-                        alt={`product-${index}`}
-                        src={url}
-                        height={200}
-                        width={200}
+                        alt={`product`}
+                        src={imageShownInFullScreen}
+                        height={1000}
+                        width={1000}
                         objectFit={'contain'}
                     />
-                ))}
-            </ImageCarousel>
-
-            <CardContent>
-                <ProductTitle>{name}</ProductTitle>
-
-                <ProductDescription>{description}</ProductDescription>
-
-                <ProductPrice>{`${price} ${t('products.shekels')}`}</ProductPrice>
-            </CardContent>
-
-            <PurchaseButton
-                variant="contained"
-                onClick={() => router.push(`/products/cakes/${cake.id}`)}
-            >
-                {t('products.purchase')}
-            </PurchaseButton>
-        </CakesEntryWrapper>
+                </Backdrop>
+            )}
+        </>
     );
 }
 

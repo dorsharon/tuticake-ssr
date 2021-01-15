@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Grid, Typography, useMediaQuery } from '@material-ui/core';
-import { useQueryCache } from 'react-query';
+import { useQueryClient } from 'react-query';
 import {
     getBreakpointAndDown,
     getBreakpointAndUp,
@@ -142,14 +142,14 @@ export default function CupDesserts() {
 
     const [isOrderFormOpen, setIsOrderFormOpen] = useState(false);
 
-    const cache = useQueryCache();
+    const queryClient = useQueryClient();
 
     const prefetchData = useCallback(async () => {
         await Promise.all([
-            cache.prefetchQuery([PRODUCTS, { productType: CUP_DESSERTS_BOX_SET }]),
-            cache.prefetchQuery([PRODUCTS, { productType: CUP_DESSERT }]),
+            queryClient.prefetchQuery([PRODUCTS, { productType: CUP_DESSERTS_BOX_SET }]),
+            queryClient.prefetchQuery([PRODUCTS, { productType: CUP_DESSERT }]),
         ]);
-    }, [cache]);
+    }, [queryClient]);
 
     const isInBreakpointSm = useMediaQuery((theme) => getBreakpointAndDown('sm')({ theme }));
 

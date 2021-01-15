@@ -1,6 +1,6 @@
 import React from 'react';
 import CakeProductDetails from '../../../components/cakes/CakeProductDetails';
-import { QueryCache } from 'react-query';
+import { QueryClient } from 'react-query';
 import { dehydrate } from 'react-query/hydration';
 import { getAllProducts } from '../../../db/productsDb';
 import { CAKE } from '../../../constants/productTypes';
@@ -22,14 +22,14 @@ export async function getStaticPaths({ locales }) {
 }
 
 export async function getStaticProps(context) {
-    const queryCache = new QueryCache();
+    const queryClient = new QueryClient();
     const { id } = context.params;
 
-    await queryCache.prefetchQuery([PRODUCT, id]);
+    await queryClient.prefetchQuery([PRODUCT, id]);
 
     return {
         props: {
-            dehydratedState: dehydrate(queryCache),
+            dehydratedState: dehydrate(queryClient),
             id,
         },
         revalidate: 60 * 30, // 30 Minutes
