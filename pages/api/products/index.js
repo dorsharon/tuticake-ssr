@@ -1,29 +1,6 @@
-import { v2 as cloudinary } from 'cloudinary';
-import { getAllProducts } from '../../../db/productsDb';
+import { fetchAllProducts } from '../../../api/products';
 
 export default async (req, res) => {
     const { productType } = req.query;
-
-    const products = await getAllProducts(productType);
-
-    const { resources: images } = await cloudinary.search
-        .expression(`folder:product-images/${productType}/* AND format:webp`)
-        .execute();
-
-    const result = products.reduce(
-        (res, { _id, ...product }) => ({
-            ...res,
-            [product.id]: { ...product, images: [] },
-        }),
-        {},
-    );
-
-    for (const { folder, public_id } of images) {
-        const splitFolder = folder.split('/');
-        const productId = splitFolder[splitFolder.length - 1];
-
-        result[productId].images.push(public_id);
-    }
-
-    res.status(200).send(Object.values(result));
+    res.status(200).send(await fetchAllProducts({ productType }));
 };

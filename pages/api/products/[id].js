@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
-import { getProduct } from '../../../db/productsDb';
+import { getProduct } from '../../../api/db/productsDb';
 
 export default async (req, res) => {
     const { id } = req.query;
