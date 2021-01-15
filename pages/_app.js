@@ -57,7 +57,7 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const queryClient = new QueryClient({
-    defaultConfig: { queries: { staleTime: 1000 * 60 * 60, queryFn: defaultQueryFn } },
+    defaultOptions: { queries: { staleTime: 1000 * 60 * 60, queryFn: defaultQueryFn } },
 });
 
 function MyApp({ Component, pageProps }) {
