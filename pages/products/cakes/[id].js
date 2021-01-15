@@ -6,11 +6,17 @@ import { getAllProducts } from '../../../db/productsDb';
 import { CAKE } from '../../../constants/productTypes';
 import { PRODUCT } from '../../../constants/queryKeys';
 
-export async function getStaticPaths() {
+export async function getStaticPaths({ locales }) {
     const products = await getAllProducts(CAKE);
 
     return {
-        paths: products.map(({ id }) => ({ params: { id } })),
+        paths: products.reduce(
+            (result, { id }) => [
+                ...result,
+                ...locales.map((locale) => ({ params: { id }, locale })),
+            ],
+            [],
+        ),
         fallback: false,
     };
 }

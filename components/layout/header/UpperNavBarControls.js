@@ -12,6 +12,7 @@ import {
 } from '../../../utils/ThemeSelectors';
 import { useRouter } from 'next/router';
 import { useI18n } from 'next-localization';
+import Link from 'next/link';
 
 const phoneNumber = '054-6629179';
 
@@ -81,7 +82,7 @@ export default function UpperNavBarControls() {
     const [visibleTooltip, setVisibleTooltip] = useState(null);
 
     const router = useRouter();
-    const { pathname, locale: currentLocale } = router;
+    const { locale: currentLocale, asPath } = router;
 
     const { t } = useI18n();
 
@@ -109,10 +110,6 @@ export default function UpperNavBarControls() {
         </List>
     );
 
-    const handleLanguageChange = (locale) => {
-        router.push(pathname, pathname, { locale });
-    };
-
     const renderLanguageMenu = () => (
         <List aria-label="language-options">
             {languages.map(({ locale, name }) => (
@@ -121,9 +118,10 @@ export default function UpperNavBarControls() {
                     disabled={currentLocale === locale}
                     key={locale}
                     button
-                    onClick={() => handleLanguageChange(locale)}
                 >
-                    <ListItemText primary={name} />
+                    <Link href={asPath} locale={locale}>
+                        <ListItemText primary={name} />
+                    </Link>
                 </ListItem>
             ))}
         </List>

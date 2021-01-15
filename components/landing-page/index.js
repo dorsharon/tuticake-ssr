@@ -12,9 +12,6 @@ import Image from 'next/image';
 import LogoHebSvg from '../../public/logo-heb.svg';
 import LogoEngSvg from '../../public/logo-eng.svg';
 import Grid from '@material-ui/core/Grid';
-import { useQuery } from 'react-query';
-import { CUP_DESSERTS_EXAMPLE_IMAGES, PROFILE_IMAGE } from '../../constants/queryKeys';
-import Skeleton from '@material-ui/lab/Skeleton';
 
 const LandingPageWrapper = styled.div`
     display: grid;
@@ -243,7 +240,6 @@ export default function LandingPage() {
                 </Waves>
             </HeaderSection>
 
-            {/*<IntroductionWrapper>*/}
             <Grid container component={IntroductionWrapper} spacing={4}>
                 <Grid item xs={12} sm={3}>
                     <ProfileImageWrapper>
@@ -252,7 +248,6 @@ export default function LandingPage() {
                             src={'website-assets/profile/profile.webp'}
                             height={352}
                             width={256}
-                            // layout={'responsive'}
                             objectFit={'contain'}
                         />
                     </ProfileImageWrapper>
@@ -267,7 +262,6 @@ export default function LandingPage() {
                     </p>
                 </Grid>
             </Grid>
-            {/*</IntroductionWrapper>*/}
         </LandingPageWrapper>
     );
 }
