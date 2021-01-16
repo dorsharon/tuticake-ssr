@@ -1,8 +1,13 @@
-import { getAllProducts } from '../db/productsDb';
 import { v2 as cloudinary } from 'cloudinary';
+import { connectToDatabase } from '../dbUtils';
 
 export async function fetchAllProducts({ productType }) {
-    const products = await getAllProducts(productType);
+    const { db } = await connectToDatabase();
+
+    const products = await db
+        .collection('products')
+        .find({ type: productType }, { projection: { _id: 0 } })
+        .toArray();
 
     const { resources: images } = await cloudinary.search
         .expression(`folder:product-images/${productType}/* AND format:webp`)
@@ -24,4 +29,28 @@ export async function fetchAllProducts({ productType }) {
     }
 
     return Object.values(result);
+}
+
+export async function fetchProduct(id) {
+    const { db } = await connectToDatabase();
+
+    const product = await db.collection('products').findOne({ id }, { projection: { _id: 0 } });
+
+    const { resources: images } = await cloudinary.search
+        .expression(`folder:product-images/cake/${id}/* AND format:webp`)
+        .execute();
+
+    return {
+        descriptionEn: product.descriptionEn,
+        descriptionHe: product.descriptionHe,
+        id: product.id,
+        isAvailable: product.isAvailable,
+        isDairy: product.isDairy,
+        isGlutenFree: product.isGlutenFree,
+        nameEn: product.nameEn,
+        nameHe: product.nameHe,
+        price: product.price,
+        type: product.type,
+        images: images.map((i) => i.public_id),
+    };
 }
