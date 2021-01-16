@@ -26,6 +26,11 @@ const CakesEntryWrapper = styled(Card)`
 
 const ImageCarousel = styled(Carousel)`
     height: 200px;
+
+    img {
+        pointer-events: auto;
+        cursor: pointer;
+    }
 `;
 
 const PurchaseButton = styled(Button)`

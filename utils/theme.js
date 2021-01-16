@@ -4,9 +4,6 @@ const primaryColor = '#ff5f7f';
 const secondaryColor = '#dd1767';
 
 const lightThemeCommonProps = {
-    typography: {
-        fontFamily: '"Alef", sans-serif',
-    },
     palette: {
         primary: { main: primaryColor },
         secondary: { main: secondaryColor },
@@ -38,9 +35,15 @@ const lightThemeCommonProps = {
 export const lightThemeRtl = createMuiTheme({
     ...lightThemeCommonProps,
     direction: 'rtl',
+    typography: {
+        fontFamily: "'Assistant', sans-serif",
+    },
 });
 
 export const lightThemeLtr = createMuiTheme({
     ...lightThemeCommonProps,
     direction: 'ltr',
+    typography: {
+        fontFamily: "'Quicksand', sans-serif",
+    },
 });

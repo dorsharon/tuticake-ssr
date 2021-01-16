@@ -53,6 +53,7 @@ const MainContent = styled.main`
 const GlobalStyles = createGlobalStyle`
     body {
         margin: 0;
+        font-family: 'Assistant', sans-serif;
     }
 `;
 
@@ -87,6 +88,15 @@ function MyApp({ Component, pageProps }) {
             <Head>
                 <title>Tuticake | תותיקייק</title>
                 <link rel="icon" href="/favicon.ico" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" />
+                <link
+                    href="https://fonts.googleapis.com/css2?family=Assistant&display=swap"
+                    rel="stylesheet"
+                />
+                <link
+                    href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap"
+                    rel="stylesheet"
+                />
             </Head>
 
             <StylesProvider jss={jss}>

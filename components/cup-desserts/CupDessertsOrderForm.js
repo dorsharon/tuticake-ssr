@@ -30,6 +30,7 @@ const customFlavorId = '5fc6ff34-2315-480a-b436-d01e9dcc89c5';
 
 const Form = styled.form`
     width: 90%;
+    padding: 20px 0;
 `;
 
 const QuantityOption = styled.button`
@@ -122,7 +123,6 @@ const BackButton = styled(MuiButton)`
     font-size: 1.5rem;
     width: 200px;
     margin-block-start: 20px;
-    margin-block-end: 20px;
 
     ${getBreakpointAndDown('xs')} {
         width: 150px;
@@ -136,7 +136,6 @@ const Button = styled(MuiButton)`
     font-size: 1.5rem;
     width: 200px;
     margin-block-start: 20px;
-    margin-block-end: 20px;
 
     &.tc-disabled {
         background: #a5a5a5;

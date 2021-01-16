@@ -2,12 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { getBreakpointAndDown, getBreakpointAndUp } from '../../utils/ThemeSelectors';
 import { useQuery } from 'react-query';
-import { Grid } from '@material-ui/core';
 import CakesEntry from './CakesEntry';
 import { PRODUCTS } from '../../constants/queryKeys';
 
 const ProductsListWrapper = styled.div`
-    margin-block-start: 20px;
+    padding: 20px 0;
     display: grid;
     column-gap: 30px;
     row-gap: 30px;
