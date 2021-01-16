@@ -18,6 +18,8 @@ import {
 import { FaSadTear } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import { useI18n } from 'next-localization';
+import Lottie from 'react-lottie-player';
+import successAnimationData from '../../assets/lottie/check-mark-success.json';
 
 const CupcakeIcon = styled(CupcakeSvg)`
     fill: ${getSecondaryColor()};
@@ -71,8 +73,8 @@ export default function OrderSentDialog(props) {
 
     const renderSuccessMessage = () => (
         <>
-            <Grid item>
-                <CupcakeIcon />
+            <Grid item >
+                <Lottie animationData={successAnimationData} play loop={false} style={{width:150, height:150}}/>
             </Grid>
 
             <Grid item>
@@ -86,7 +88,7 @@ export default function OrderSentDialog(props) {
     return (
         <Dialog open={isOpen}>
             <DialogContent>
-                <Grid container direction={'column'} alignItems={'center'} spacing={4}>
+                <Grid container direction={'column'} alignItems={'center'} spacing={2}>
                     {hasError
                         ? renderErrorMessage()
                         : isProcessing
