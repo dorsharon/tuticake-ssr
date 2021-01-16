@@ -7,7 +7,7 @@ import {
     Typography,
     CardContent as MuiCardContent,
     Card,
-    Backdrop,
+    Backdrop as MuiBackdrop,
 } from '@material-ui/core';
 import { useInView } from 'react-intersection-observer';
 import { getCommonColor, getFontFamily, getGradient } from '../../utils/ThemeSelectors';
@@ -22,6 +22,10 @@ const CakesEntryWrapper = styled(Card)`
     position: relative;
     display: flex;
     flex-direction: column;
+`;
+
+const Backdrop = styled(MuiBackdrop)`
+    z-index: 9999;
 `;
 
 const ImageCarousel = styled(Carousel)`
@@ -207,8 +211,8 @@ export default function CakesEntry(props) {
                     <Image
                         alt={`product`}
                         src={imageShownInFullScreen}
-                        height={1000}
-                        width={1000}
+                        height={700}
+                        width={700}
                         objectFit={'contain'}
                     />
                 </Backdrop>
