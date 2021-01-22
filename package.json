@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_ICU_DATA=node_modules/full-icu next dev",
-    "build": "NODE_ICU_DATA=node_modules/full-icu next build",
+    "dev": "cross-env NODE_ICU_DATA=node_modules/full-icu next dev",
+    "build": "cross-env  NODE_ICU_DATA=node_modules/full-icu next build",
     "start": "next start"
   },
   "dependencies": {
@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "@hookform/devtools": "^2.2.1",
+    "cross-env": "^7.0.3",
     "eslint": "^7.12.1",
     "eslint-plugin-react": "^7.21.5",
     "prettier": "^2.1.2"
