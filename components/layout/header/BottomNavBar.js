@@ -38,7 +38,7 @@ export default function BottomNavBar() {
                     {navigationItems.map(({ i18nKey, icon: Icon, url }) => (
                         <BottomNavigationAction
                             key={url}
-                            label={t(`pageNames.${i18nKey}`)}
+                            label={t(i18nKey)}
                             icon={
                                 <IconWrapper>
                                     <Icon />

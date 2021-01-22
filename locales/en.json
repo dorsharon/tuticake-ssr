@@ -101,6 +101,10 @@
         "socialMedia": "Follow us on social media to know when it comes.",
         "whenItComes": "And when it does... it'll be so deliciously good!"
     },
+    "landingPage": {
+        "introduction": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\n                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse",
+        "startOrder": "Start your order:"
+    },
     "cakes": {
         "questions": {
             "topping": {

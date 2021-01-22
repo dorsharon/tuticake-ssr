@@ -5,6 +5,7 @@ import {
     getBreakpointAndUp,
     getCommonColor,
     getGradient,
+    getPrimaryColor,
 } from '../../utils/ThemeSelectors';
 import LogoCupcakeSvg from '../../public/logo-cupcake.svg';
 import { useRouter } from 'next/router';
@@ -12,6 +13,9 @@ import Image from 'next/image';
 import LogoHebSvg from '../../public/logo-heb.svg';
 import LogoEngSvg from '../../public/logo-eng.svg';
 import Grid from '@material-ui/core/Grid';
+import { Typography } from '@material-ui/core';
+import { useI18n } from 'next-localization';
+import navigationItems from '../layout/header/NavBarNavigationItems';
 
 const LandingPageWrapper = styled.div`
     display: grid;
@@ -126,17 +130,12 @@ const LogoCupcake2 = styled(LogoCupcakeSvg)`
 `;
 
 const IntroductionWrapper = styled.div`
-    //display: flex;
     align-self: flex-start;
     justify-self: center;
     align-items: center;
 
     ${getBreakpointAndUp('lg')} {
-        //flex-direction: row;
         width: 70%;
-        //grid-template-columns: 240px 1fr;
-        //grid-template-rows: 295px;
-        //column-gap: 40px;
     }
 
     ${getBreakpointAndDown('md')} {
@@ -210,8 +209,60 @@ const ProfileImageWrapper = styled.div`
     }
 `;
 
+const OrderOptionsWrapper = styled.div`
+    display: grid;
+    place-items: center;
+    margin-block-start: 20px;
+    margin-block-end: 20px;
+    width: 100%;
+
+    ${getBreakpointAndUp('sm')} {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    ${getBreakpointAndDown('xs')} {
+        grid-template-columns: 1fr;
+        row-gap: 30px;
+    }
+`;
+
+const OrderOption = styled.button`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid ${getPrimaryColor()};
+    border-radius: 3px;
+    background-color: ${getCommonColor('white')};
+    outline: none;
+    cursor: pointer;
+    transition: all 300ms ease;
+    width: 200px;
+    height: 200px;
+    margin-block-end: 15px;
+
+    svg {
+        width: 5rem;
+        height: 5rem;
+        fill: ${getPrimaryColor()};
+    }
+
+    :hover {
+        background-color: ${getPrimaryColor()};
+        color: ${getCommonColor('white')};
+        transform: scale(1.2);
+
+        svg {
+            fill: ${getCommonColor('white')};
+        }
+    }
+`;
+
 export default function LandingPage() {
-    const { locale } = useRouter();
+    const { t } = useI18n();
+
+    const router = useRouter();
+    const { locale } = router;
 
     const Logo = locale === 'he' ? LogoHeb : LogoEng;
 
@@ -254,13 +305,23 @@ export default function LandingPage() {
                 </Grid>
 
                 <Grid item xs={12} sm={9}>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    </p>
+                    <Typography>{t('landingPage.introduction')}</Typography>
                 </Grid>
+
+                <Grid item xs={12}>
+                    <Typography variant={'h3'} align={'center'}>
+                        {t('landingPage.startOrder')}
+                    </Typography>
+                </Grid>
+
+                <OrderOptionsWrapper>
+                    {navigationItems.map(({ url, i18nKey, icon: Icon }) => (
+                        <OrderOption key={url} onClick={() => router.push(url)}>
+                            <Icon />
+                            <Typography variant={'h4'}>{t(i18nKey)}</Typography>
+                        </OrderOption>
+                    ))}
+                </OrderOptionsWrapper>
             </Grid>
         </LandingPageWrapper>
     );

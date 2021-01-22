@@ -146,9 +146,7 @@ export default function UpperNavBar() {
                             {navigationItems.map(({ name, i18nKey, icon: Icon, url }, index) => (
                                 <Link key={url} href={url} value={url}>
                                     <Tab
-                                        label={
-                                            <LinkTabLabel>{t(`pageNames.${i18nKey}`)}</LinkTabLabel>
-                                        }
+                                        label={<LinkTabLabel>{t(i18nKey)}</LinkTabLabel>}
                                         icon={
                                             <LinkTabIcon>
                                                 <Icon />
