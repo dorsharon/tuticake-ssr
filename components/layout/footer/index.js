@@ -67,6 +67,7 @@ export default function Footer() {
                             color={'inherit'}
                             href={url}
                             target={'_blank'}
+                            rel={'noopener'}
                             aria-label={name}
                         >
                             {icon}

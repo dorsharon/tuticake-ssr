@@ -76,14 +76,18 @@ export default function ImageCarousel(props) {
             showThumbs={false}
             renderArrowPrev={(onClick, hasPrev) =>
                 hasPrev && (
-                    <ArrowButton className={'prev-button'} onClick={onClick}>
+                    <ArrowButton
+                        className={'prev-button'}
+                        onClick={onClick}
+                        aria-label={'previous'}
+                    >
                         <PrevIcon />
                     </ArrowButton>
                 )
             }
             renderArrowNext={(onClick, hasNext) =>
                 hasNext && (
-                    <ArrowButton className={'next-button'} onClick={onClick}>
+                    <ArrowButton className={'next-button'} onClick={onClick} aria-label={'next'}>
                         <NextIcon />
                     </ArrowButton>
                 )
