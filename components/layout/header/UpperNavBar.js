@@ -44,7 +44,9 @@ const LinkTab = styled(Tab).attrs(() => ({
     }
 `;
 
-const LogoWrapper = styled.a`
+const LogoWrapper = styled.a.attrs(() => ({
+    'aria-label': 'homepage',
+}))`
     height: 100%;
     display: flex;
     align-items: flex-start;

@@ -158,7 +158,7 @@ export default function UpperNavBarControls() {
             interactive
         >
             <ControlWrapper
-                aria-controls={name}
+                aria-label={name}
                 aria-haspopup={'true'}
                 onClick={() => showTooltip(name)}
                 selected={name === visibleTooltip}

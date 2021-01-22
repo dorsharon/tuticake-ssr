@@ -43,8 +43,12 @@ const SocialMediaSection = styled.section`
 `;
 
 const socialNetworkIcons = [
-    { icon: <FacebookIcon />, url: 'https://www.facebook.com/Tutiscake-100395921353017/' },
-    { icon: <InstagramIcon />, url: 'https://www.instagram.com/tuti_cake/' },
+    {
+        icon: <FacebookIcon />,
+        url: 'https://www.facebook.com/Tutiscake-100395921353017/',
+        name: 'Facebook',
+    },
+    { icon: <InstagramIcon />, url: 'https://www.instagram.com/tuti_cake/', name: 'Instragram' },
 ];
 
 export default function Footer() {
@@ -56,13 +60,14 @@ export default function Footer() {
                 {t('footer.followUs')}
 
                 <div>
-                    {socialNetworkIcons.map(({ icon, url }) => (
+                    {socialNetworkIcons.map(({ icon, url, name }) => (
                         <IconButton
                             key={url}
                             component={'a'}
                             color={'inherit'}
                             href={url}
                             target={'_blank'}
+                            aria-label={name}
                         >
                             {icon}
                         </IconButton>
