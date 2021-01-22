@@ -118,11 +118,8 @@ export default function UpperNavBar() {
     const router = useRouter();
     const { pathname } = router;
 
-    const handleTabChange = (event, newValue) => {
-        router.push(newValue);
-    };
-
-    console.log('TAB', navigationItems.find(({ url }) => pathname.startsWith(url))?.url ?? false);
+    const tab = navigationItems.find(({ url }) => pathname.startsWith(url))?.url ?? false;
+    console.log('TAB', tab);
 
     return (
         <NavBar isShrinked={isScrolled} isBordered={isScrolled}>
@@ -134,11 +131,8 @@ export default function UpperNavBar() {
                 <Hidden mdDown>
                     <Grid item xs={6} component={TabsWrapper}>
                         <Tabs
-                            value={
-                                navigationItems.find(({ url }) => pathname.startsWith(url))?.url ??
-                                false
-                            }
-                            onChange={handleTabChange}
+                            value={tab}
+                            onChange={(e, url) => router.push(url)}
                             indicatorColor={'primary'}
                             textColor={'primary'}
                             centered
