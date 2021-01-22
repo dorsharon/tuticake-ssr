@@ -19,6 +19,7 @@ import { lightThemeLtr, lightThemeRtl } from '../utils/theme';
 import { I18nProvider } from 'next-localization';
 import HE from '../locales/he.json';
 import EN from '../locales/en.json';
+import LogRocket from 'logrocket';
 
 const MainLayoutWrapper = styled.div`
     height: 100vh;

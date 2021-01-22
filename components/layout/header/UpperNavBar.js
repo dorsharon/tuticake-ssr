@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { Grid, Hidden, SvgIcon, Tab, Tabs, Typography, useScrollTrigger } from '@material-ui/core';
 import UpperNavBarControls from './UpperNavBarControls';
@@ -28,9 +28,15 @@ const LinkTabLabel = styled(Typography).attrs({
     font-size: 1.4rem;
 `;
 
-const LinkTab = styled(Tab).attrs({
-    component: Link,
-})`
+const LinkTabA = forwardRef(({ url, ...otherProps }, ref) => (
+    <Link href={url} passHref>
+        <a ref={ref} {...otherProps} />
+    </Link>
+));
+
+const LinkTab = styled(Tab).attrs(() => ({
+    component: LinkTabA,
+}))`
     :hover {
         ${LinkTabIcon}, ${LinkTabLabel} {
             color: ${getSecondaryColor()};
@@ -38,7 +44,7 @@ const LinkTab = styled(Tab).attrs({
     }
 `;
 
-const LogoWrapper = styled.div`
+const LogoWrapper = styled.a`
     height: 100%;
     display: flex;
     align-items: flex-start;
@@ -124,9 +130,11 @@ export default function UpperNavBar() {
     return (
         <NavBar isShrinked={isScrolled} isBordered={isScrolled}>
             <Grid container component={NavBarControlsWrapper}>
-                <Grid item xs component={LogoWrapper}>
-                    <Logo onClick={() => router.push('/')} alt={'logo'} />
-                </Grid>
+                <Link key={'/'} href={'/'} passHref>
+                    <Grid item xs component={LogoWrapper}>
+                        <Logo alt={'logo'} />
+                    </Grid>
+                </Link>
 
                 <Hidden mdDown>
                     <Grid item xs={6} component={TabsWrapper}>
@@ -137,20 +145,19 @@ export default function UpperNavBar() {
                             textColor={'primary'}
                             centered
                         >
-                            {navigationItems.map(({ name, i18nKey, icon: Icon, url }, index) => (
-                                <Link key={url} href={url} value={url}>
-                                    <Tab
-                                        label={<LinkTabLabel>{t(i18nKey)}</LinkTabLabel>}
-                                        icon={
-                                            <LinkTabIcon>
-                                                <Icon />
-                                            </LinkTabIcon>
-                                        }
-                                        to={url}
-                                        value={url}
-                                        aria-controls={`nav-tabpanel-${index}`}
-                                    />
-                                </Link>
+                            {navigationItems.map(({ i18nKey, icon: Icon, url }, index) => (
+                                <LinkTab
+                                    key={url}
+                                    label={<LinkTabLabel>{t(i18nKey)}</LinkTabLabel>}
+                                    icon={
+                                        <LinkTabIcon>
+                                            <Icon />
+                                        </LinkTabIcon>
+                                    }
+                                    url={url}
+                                    value={url}
+                                    aria-controls={`nav-tabpanel-${index}`}
+                                />
                             ))}
                         </Tabs>
                     </Grid>
