@@ -321,7 +321,7 @@ export default function LandingPage() {
                 <OrderOptionsWrapper>
                     {navigationItems.map(({ url, i18nKey, icon: Icon }) => (
                         <Link key={url} href={url} passHref>
-                            <OrderOption ariaLabel={t(i18nKey)}>
+                            <OrderOption aria-label={t(i18nKey)}>
                                 <Icon />
                                 <Typography variant={'h4'}>{t(i18nKey)}</Typography>
                             </OrderOption>
