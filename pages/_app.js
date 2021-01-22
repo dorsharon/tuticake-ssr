@@ -87,6 +87,14 @@ function MyApp({ Component, pageProps }) {
         <>
             <Head>
                 <title>Tuticake | תותיקייק</title>
+
+                <meta
+                    name={'description'}
+                    content={
+                        'ברוכים הבאים לתותיקייק! פה תוכלו למצוא: עוגות מעוצבות, קינוחי כוסות, מארזים מגוונים ועוד! הזמנות ניתן לבצע דרך האתר או בטלפון: 054-6629179'
+                    }
+                />
+
                 <link rel="icon" href="/favicon.ico" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <link

@@ -125,7 +125,6 @@ export default function UpperNavBar() {
     const { pathname } = router;
 
     const tab = navigationItems.find(({ url }) => pathname.startsWith(url))?.url ?? false;
-    console.log('TAB', tab);
 
     return (
         <NavBar isShrinked={isScrolled} isBordered={isScrolled}>

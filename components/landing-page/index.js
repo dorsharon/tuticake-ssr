@@ -16,6 +16,7 @@ import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
 import { useI18n } from 'next-localization';
 import navigationItems from '../layout/header/NavBarNavigationItems';
+import Link from 'next/link';
 
 const LandingPageWrapper = styled.div`
     display: grid;
@@ -226,7 +227,7 @@ const OrderOptionsWrapper = styled.div`
     }
 `;
 
-const OrderOption = styled.button`
+const OrderOption = styled.a`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -240,6 +241,9 @@ const OrderOption = styled.button`
     width: 200px;
     height: 200px;
     margin-block-end: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: ${getCommonColor('black')};
 
     svg {
         width: 5rem;
@@ -316,10 +320,12 @@ export default function LandingPage() {
 
                 <OrderOptionsWrapper>
                     {navigationItems.map(({ url, i18nKey, icon: Icon }) => (
-                        <OrderOption key={url} onClick={() => router.push(url)}>
-                            <Icon />
-                            <Typography variant={'h4'}>{t(i18nKey)}</Typography>
-                        </OrderOption>
+                        <Link key={url} href={url} passHref>
+                            <OrderOption>
+                                <Icon />
+                                <Typography variant={'h4'}>{t(i18nKey)}</Typography>
+                            </OrderOption>
+                        </Link>
                     ))}
                 </OrderOptionsWrapper>
             </Grid>
